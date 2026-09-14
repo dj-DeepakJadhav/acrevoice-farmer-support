@@ -18,6 +18,30 @@ Farmers should not need to navigate a new portal just to answer one focused ques
 
 It does **not** decide eligibility, approve a subsidy, submit to a government system, or replace an adviser.
 
+## The job the agent completes
+
+Missing or unclear information creates a repetitive loop for an adviser: find the relevant programme guidance, contact the farmer, interpret a spoken answer, decide whether it is safe to use, and prepare a case note. AcreVoice takes on the repeatable coordination work while preserving the decision for a person.
+
+For every support case, the system:
+
+1. narrows the request to a small set of missing facts and links the relevant public guidance;
+2. obtains callback consent and makes one focused CALL-E phone conversation;
+3. asks, reads back, and captures every answer as structured evidence;
+4. uses a Strands agent with field-specific tools to normalise the spoken response and identify ambiguity;
+5. escalates uncertainty to an adviser instead of guessing; and
+6. creates a reusable CSV or JSON hand-off when a human has reviewed the evidence.
+
+This is deliberately not a generic voice bot. Its unit of work is an evidence-backed farmer-support case, and its safe stopping point is a human decision.
+
+## End-to-end evidence trail
+
+```text
+Official source → consent → CALL-E conversation → Strands normalisation
+               → confirmation and audit event → human review → export or expert routing
+```
+
+The call adapter makes one consented outbound call per case and receives a structured outcome. The Strands record agent uses purpose-built area and yes/no normalisation tools; deterministic guardrails reject hedged or unconfirmed values even when a model is unavailable. Every step is written to an append-only audit log, allowing an adviser to see why a value was proposed and why it was or was not eligible for approval.
+
 ## Built for people, not forms
 
 The public-service home page explains the service, its sources, safeguards, and frequently asked questions before someone enters the workspace. The workspace then supports a focused case flow:
@@ -35,7 +59,7 @@ The adviser console can be English while a farmer receives a German call. Progra
 
 ## Run locally
 
-No credentials are needed for the deterministic local workflow.
+No credentials are needed to test the deterministic local workflow. Phone calling remains a core product capability; configure CALL-E before presenting the end-to-end service with a real callback.
 
 ```bash
 python3.14 -m venv .venv
@@ -55,10 +79,9 @@ Tests:
 PYTHONPATH=src ./.venv/bin/python -m pytest tests -q
 ```
 
-### Optional phone and model integrations
+### Configure the connected service
 
-Copy `.env.example` to `.env` and fill in what you have. Every key is optional — without
-them the demo runs on the deterministic provider and a deterministic policy.
+Copy `.env.example` to `.env`. `CALLE_API_KEY` and a permitted test phone number are required to place a real callback. The local deterministic path is for development and automated tests only.
 
 ```bash
 cp .env.example .env
@@ -78,11 +101,16 @@ Then:
 PYTHONPATH=src ./.venv/bin/python -m acrevoice --live
 ```
 
-## Technology
+## Technology in the working path
 
-- **FastAPI and SQLite** provide a compact local web application and append-only audit store.
-- **[CALL-E](https://heycall-e.com/)** is the optional outbound-call provider. Without its API key, AcreVoice uses deterministic simulated call outcomes.
-- **[Strands Agents](https://strandsagents.com/docs/user-guide/quickstart/overview/)** orchestrates the optional language-model path. It can use **[Amazon Bedrock](https://docs.aws.amazon.com/bedrock/)**, which provides managed access to foundation models, or configured alternatives.
+| Layer | Role in AcreVoice |
+| --- | --- |
+| **[CALL-E](https://heycall-e.com/)** | Places the consented outbound callback and returns structured results the workflow can act on. |
+| **[Strands Agents](https://strandsagents.com/docs/user-guide/quickstart/overview/)** | Runs the record agent and its field-specific normalisation tools, producing structured evidence rather than free-form notes. |
+| **[Amazon Bedrock](https://docs.aws.amazon.com/bedrock/)** | Provides the configured model runtime for the Strands agent. |
+| **FastAPI + SQLite** | Delivers the browser service, case workflow, export endpoints, and append-only audit trail. |
+
+The repository includes both a deterministic development path and the connected runtime path. For an end-to-end run, configure CALL-E and Amazon Bedrock, start the service, create a support case, request a callback, then review and export the returned evidence.
 
 ## Public sources used in the product
 
