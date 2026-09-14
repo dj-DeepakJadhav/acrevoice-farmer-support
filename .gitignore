@@ -13,6 +13,12 @@ __pycache__/
 
 # Local planning and audit material stays on the developer machine.
 docs/
+# The final recording and submission copy are part of the public review package.
+!Docs/
+Docs/*
+!Docs/ONE_TAKE_DEMO_SCRIPT.md
+!Docs/JUDGE_DEMO.md
+!Docs/DEVPOST_SUBMISSION.md
 # Local recording helper; the rendered final video is also kept outside Git.
 scripts/create_submission_video.py
 SECURITY.md
