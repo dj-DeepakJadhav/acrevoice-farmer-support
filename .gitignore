@@ -1,0 +1,33 @@
+__pycache__/
+*.py[cod]
+.DS_Store
+.env
+.env.*
+!.env.example
+.cloud/
+.agent/
+.agents/
+.claude/
+.openai/
+.codebase-memory/
+
+# Local planning and audit material stays on the developer machine.
+docs/
+SECURITY.md
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+
+# runtime state, never committed
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite3
+*.pem
+*.key
+*.p12
+*.pfx

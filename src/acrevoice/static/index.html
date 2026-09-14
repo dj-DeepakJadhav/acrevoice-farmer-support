@@ -1,0 +1,844 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AcreVoice adviser console</title>
+<style>
+:root{--bg:#f3f6f4;--card:#fff;--ink:#16302a;--muted:#4e655b;--line:#dde7e1;--green:#1f6b4a;--green-soft:#e8f2ec;
+--amber:#8a6d0b;--amber-soft:#fdf4d7;--red:#9b2c2c;--red-soft:#fbe9e9;--radius:12px}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}
+body:has(#homeView:not([hidden])){background:#f7f8f3}
+main{max-width:1440px;margin:0 auto;padding:32px 24px 64px}
+button,select,summary,.download{min-height:44px}
+button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid #16302a;outline-offset:4px}
+.card{min-width:0}.grid{align-items:start}.row{overflow-wrap:anywhere}
+.goal{padding:20px;background:#e8f2ec;border-radius:10px;margin:18px 0}.goal strong{font-size:28px;display:block}
+.navigator{margin:0 0 22px;padding:18px;border:1px solid #b9d7c5;border-radius:10px;background:var(--green-soft)}
+.navigator h2{margin:0 0 4px}.navigator p{margin:0 0 12px;color:var(--muted)}.navigatorForm{display:flex;gap:9px;flex-wrap:wrap;align-items:end}.navigatorForm label{display:grid;gap:4px;font-size:12px;font-weight:700}.navigatorForm input,.navigatorForm select{min-height:42px;padding:7px;border:1px solid var(--line);border-radius:7px;background:#fff;color:var(--ink)}
+.dataNote{margin:12px 0 0!important;padding:9px 11px;border-left:3px solid var(--green);background:#fff;border-radius:5px;font-size:13px}
+.topnav{display:flex;gap:15px;align-items:center;flex-wrap:wrap;margin:16px 0 22px;border-top:1px solid var(--line);padding-top:14px}.topnav button{background:transparent;color:var(--muted);padding:6px 0;min-height:auto;font-size:13px}.topnav button.primaryNav{margin-left:auto;background:var(--green);color:#fff;padding:9px 14px}
+.hero{position:relative;overflow:hidden;min-height:445px;border-radius:18px;background:#173d31;color:#fff;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(330px,.9fr);align-items:stretch}.heroCopy{position:relative;z-index:2;padding:60px 46px;display:flex;flex-direction:column;justify-content:center;background:linear-gradient(90deg,rgba(18,52,42,.98),rgba(18,52,42,.90),rgba(18,52,42,.38))}.heroImage{width:100%;height:100%;object-fit:cover;min-height:445px}.hero h1{font-size:clamp(36px,4.6vw,60px);line-height:1.05;margin:10px 0 18px;letter-spacing:-.04em}.hero p{font-size:18px;max-width:580px;color:#e2eee6;margin:0 0 25px}.hero .eyebrow{color:#b8dfc6}.heroActions{display:flex;gap:12px;flex-wrap:wrap}.heroActions button{background:#fff;color:var(--ink)}.heroActions .secondary{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.55)}
+.trustStrip{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin:18px 0 45px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}.trustItem{padding:18px;background:#fff}.trustItem b{display:block;font-size:14px}.trustItem span{display:block;color:var(--muted);font-size:13px;margin-top:3px}.sectionLead{max-width:720px;margin:0 0 22px}.sectionLead h2{font-size:28px;margin-bottom:6px}.sectionLead p{color:var(--muted);margin:0}.serviceGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:46px}.serviceCard{padding:22px}.serviceIcon{width:36px;height:36px;display:grid;place-items:center;background:var(--green-soft);border-radius:9px;color:var(--green);font-weight:800;margin-bottom:16px}.serviceCard h3{margin:0 0 7px;color:var(--ink);font-size:16px;text-transform:none;letter-spacing:0}.serviceCard p{color:var(--muted);margin:0;font-size:14px}.process{background:#e8f2ec;border-radius:16px;padding:32px;margin-bottom:46px}.processSteps{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:20px}.processStep{padding:14px 12px;background:#fff;border-radius:9px;font-size:13px}.processStep b{display:block;color:var(--green);font-size:11px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}.splitInfo{display:grid;grid-template-columns:1.1fr .9fr;gap:20px;margin-bottom:46px}.sourceList a{display:block;padding:12px 0;border-bottom:1px solid var(--line);color:var(--green);font-weight:700;text-decoration:none}.sourceList a small{display:block;color:var(--muted);font-weight:400;margin-top:2px}.faq details{margin:0;border-bottom:1px solid var(--line);padding:12px 0}.faq details summary{font-size:15px;color:var(--ink)}.faq details p{color:var(--muted);max-width:680px;margin:10px 0 4px}.homeFooter{border-top:1px solid var(--line);padding:22px 0;color:var(--muted);font-size:13px}
+@media(max-width:800px){.hero{grid-template-columns:1fr}.heroImage{display:none}.heroCopy{padding:42px 28px}.trustStrip,.serviceGrid,.processSteps{grid-template-columns:1fr}.splitInfo{grid-template-columns:1fr}.topnav .primaryNav{margin-left:0}}
+.sourceCard{border:1px solid #b9d7c5;border-radius:9px;padding:12px;margin:10px 0;background:#f7fcf8}.sourceCard p{margin:5px 0;font-size:13px}.sourceCard a{color:var(--green);font-weight:700}.routeBox{margin-top:14px;padding:12px;background:var(--amber-soft);border-radius:8px;color:#594500;font-size:13px}
+progress{width:100%;accent-color:#1f6b4a;height:12px}
+.journey{margin:20px 0 4px;padding:16px 18px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius)}
+.journey h2{margin:0 0 4px}.journey p{margin:0 0 14px;color:var(--muted);font-size:13px}
+.journeySteps{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.journeyStep{position:relative;padding:9px 8px 8px 28px;border-radius:8px;background:#f7faf8;color:var(--muted);font-size:12px;font-weight:700;min-height:52px}
+.journeyStep::before{content:attr(data-number);position:absolute;left:8px;top:9px;width:15px;height:15px;border:1px solid currentColor;border-radius:50%;font-size:10px;line-height:14px;text-align:center}
+.journeyStep.done{background:var(--green-soft);color:var(--green)}.journeyStep.done::before{content:"✓"}
+.journeyStep.active{background:var(--amber-soft);color:var(--amber);box-shadow:inset 0 0 0 1px currentColor}
+@media(max-width:700px){.journeySteps{grid-template-columns:1fr}.journeyStep{min-height:38px}}
+.download{display:inline-flex;align-items:center;padding:10px 16px;color:#1f6b4a;border:1px solid #1f6b4a;border-radius:8px;font-weight:600;text-decoration:none}
+.call-entry{padding:14px 0;border-bottom:1px solid var(--line)}.call-entry p{margin:6px 0}
+.banner.bad{background:var(--red-soft);color:var(--red)}.banner.ok{background:var(--green-soft);color:var(--green)}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important}}
+header{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:8px}
+.eyebrow{color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-size:11px;font-weight:700}
+h1{font-size:30px;margin:6px 0 2px}
+.sub{color:var(--muted);margin:0}
+.grid{display:grid;grid-template-columns:320px 1fr;gap:20px;margin-top:24px}
+@media(max-width:860px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px}
+h2{font-size:16px;margin:0 0 14px}
+h3{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:24px 0 10px}
+.row{display:flex;justify-content:space-between;gap:14px;padding:10px 0;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:0}
+.muted{color:var(--muted);font-size:13px}
+.langsel{display:inline-flex;gap:7px;align-items:center;font-size:12px;color:var(--muted)}
+.langsel select{font:inherit;color:var(--ink);padding:5px 8px;border:1px solid var(--line);
+border-radius:7px;background:var(--card);min-height:44px}
+.callLang{font:inherit;font-size:13px;color:var(--ink);padding:4px 7px;border:1px solid var(--line);
+border-radius:6px;background:var(--card)}
+.note{font-size:12px;color:var(--amber);margin-top:6px;font-weight:600}
+:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+.pill{display:inline-block;border-radius:999px;padding:3px 10px;font-size:11px;font-weight:700;letter-spacing:.03em}
+.pill.ok{background:var(--green-soft);color:var(--green)}
+.pill.warn{background:var(--amber-soft);color:var(--amber)}
+.pill.bad{background:var(--red-soft);color:var(--red)}
+button{background:var(--green);color:#fff;border:0;border-radius:8px;padding:10px 16px;font-weight:600;font-size:14px;cursor:pointer}
+button.secondary{background:var(--green-soft);color:var(--green)}
+button:disabled{opacity:.45;cursor:not-allowed}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;align-items:center}
+label.live{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);cursor:pointer}
+.scheme{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:14px;background:var(--green-soft)}
+.scheme h3{margin:0 0 8px;color:var(--ink)}
+.schemeTitle{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:4px}
+.schemeTitle b{font-size:15px}
+.scheme p{margin:6px 0}
+.stake{font-size:13px;margin-top:6px}
+.tableWrap{overflow-x:auto}
+table.fieldsTable{width:100%;border-collapse:collapse;font-size:14px;margin-bottom:6px}
+table.fieldsTable th{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);
+  text-align:left;padding:8px;border-bottom:2px solid var(--line);white-space:nowrap}
+table.fieldsTable td{padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+table.fieldsTable tr:last-child td{border-bottom:0}
+table.fieldsTable tr.confirmed td{background:#fafdfb}
+table.fieldsTable tr.unconfirmed td{background:#fffdf6}
+table.fieldsTable tr.selected{outline:2px solid var(--ink)}
+table.fieldsTable tr.selected td:first-child{position:relative}
+table.fieldsTable tr.selected td:first-child::before{content:"▶";position:absolute;left:-13px;top:50%;
+  transform:translateY(-50%);color:var(--ink);font-size:11px}
+@media(max-width:520px){table.fieldsTable tr.selected td:first-child::before{display:none}}
+.fieldName{font-weight:700}
+.why{color:var(--muted);font-size:12px;margin-top:4px;max-width:280px}
+.techNote{color:var(--amber);font-size:11px;margin-top:4px}
+.spoken{color:var(--muted);font-size:12px;margin-top:4px}
+.old{color:var(--muted);text-decoration:line-through}
+.new{font-weight:700}
+.q{color:var(--muted);font-size:13px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);
+  white-space:nowrap;border:0}
+details{margin-top:6px}
+details>summary{cursor:pointer;font-size:12px;color:var(--muted);font-weight:600}
+details>pre{margin-top:8px}
+.timeline{font-size:13px}
+.tl{display:grid;grid-template-columns:150px 1fr;gap:10px;padding:7px 0;border-bottom:1px solid var(--line)}
+.tl:last-child{border-bottom:0}
+.tl time{color:var(--muted);font-family:ui-monospace,monospace;font-size:11px}
+pre{white-space:pre-wrap;background:#f7faf8;border:1px solid var(--line);border-radius:8px;padding:14px;
+font:12px/1.55 ui-monospace,monospace;overflow:auto;max-height:340px}
+.banner{border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:14px}
+.banner.warn{background:var(--amber-soft);color:var(--amber)}
+button.icon{background:transparent;color:var(--ink);border:1px solid var(--line);padding:6px 10px;font-size:13px}
+.print-only{display:none}
+table.casesTable{width:100%;border-collapse:collapse;font-size:14px}
+table.casesTable th{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);
+  text-align:left;padding:8px;border-bottom:2px solid var(--line);white-space:nowrap}
+table.casesTable td{padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+table.casesTable tr:last-child td{border-bottom:0}
+button.linklike{background:none;border:0;padding:0;font:inherit;font-weight:700;color:var(--green);
+  cursor:pointer;text-decoration:underline}
+[hidden]{display:none !important}
+.emptyState{padding:28px 12px;text-align:center;color:var(--muted)}
+#toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);z-index:80;max-width:520px;
+  background:var(--red-soft);color:var(--red);border:1px solid var(--red);border-radius:8px;
+  padding:12px 18px;font-size:13px;font-weight:600;box-shadow:0 4px 18px rgba(0,0,0,.12)}
+#spinner{position:fixed;inset:0;background:rgba(22,48,42,.35);z-index:70;
+  display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:center}
+#spinner .spin{width:34px;height:34px;border-radius:50%;border:3px solid rgba(255,255,255,.5);
+  border-top-color:#fff;animation:spin .8s linear infinite}
+#spinner span{color:#fff;font-size:13px;font-weight:600}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+@media print{
+  body{background:#fff;color:#000}
+  main{max-width:none;padding:0;margin:0}
+  button,select,.langsel,label.live,pre,#mode,table.fieldsTable input[type=checkbox],
+  #fieldsTable th:first-child,#fieldsTable td:first-child,details,#callHint,
+  #hPackage,#importFile,#importStatus,#toast,#spinner{display:none !important}
+  .actions{display:none !important}
+  .print-only{display:inline}
+  .print-only.block{display:block}
+  .card{border:1px solid #000;border-radius:0;padding:0;margin-bottom:16px;break-inside:avoid}
+  .grid{display:block}
+  .pill{background:none !important;border:1px solid #000;color:#000 !important}
+  table.fieldsTable th,table.fieldsTable td{border:1px solid #000;break-inside:avoid}
+  .scheme{border:1px solid #000;background:none !important}
+  .note,.techNote{color:#000;font-weight:700}
+  .old,.new,.why,.spoken{color:#000}
+  h1,h2,h3{color:#000}
+  .timeline{display:table;width:100%;border-collapse:collapse}
+  .tl{display:table-row}
+  .tl>*{display:table-cell;border:1px solid #000;padding:4px 8px;font-size:11px}
+  .tl time{color:#000}
+}
+</style></head><body><main>
+<header>
+  <div><div class="eyebrow" id="eyebrow"></div>
+    <h1 id="title"></h1>
+    <p class="sub" id="intro"></p></div>
+  <div style="text-align:right">
+    <div id="mode" class="muted" style="margin-bottom:8px"></div>
+    <label class="langsel"><span id="lblConsoleLang"></span>
+      <select id="consoleLang" onchange="setConsoleLang(this.value)">
+        <option value="de">Deutsch</option><option value="en">English</option>
+      </select></label>
+    <button type="button" class="icon" id="importBtn" onclick="document.getElementById('importFile').click()" style="margin-left:8px"></button>
+    <input type="file" id="importFile" accept=".csv" style="display:none" onchange="importCsv(this.files[0])">
+    <div id="importStatus" class="muted" style="margin-top:6px;font-size:12px"></div>
+  </div>
+</header>
+
+<nav class="topnav" aria-label="Main navigation">
+  <button type="button" onclick="showHome()" id="navHome">Home</button>
+  <button type="button" onclick="showHomeSection('howItWorks')" id="navHow">How it works</button>
+  <button type="button" onclick="showHomeSection('sources')" id="navSources">Sources & trust</button>
+  <button type="button" onclick="showHomeSection('faq')" id="navFaq">FAQ</button>
+  <button type="button" class="primaryNav" onclick="showCaseList()" id="navWorkspace">Open workspace</button>
+</nav>
+
+<section id="homeView">
+  <section class="hero">
+    <div class="heroCopy"><div class="eyebrow" id="heroEyebrow">A PUBLIC-SERVICE SUPPORT DESK FOR BAVARIAN FARMERS</div>
+      <h1 id="heroTitle">Clear guidance. Human decisions. No lost paperwork.</h1>
+      <p id="heroText">AcreVoice helps farmers find official funding guidance, answer a focused question by phone with consent, and hand a reliable evidence package to an adviser.</p>
+      <div class="heroActions"><button type="button" onclick="showCaseList()" id="heroStart">Find funding guidance</button><button type="button" class="secondary" onclick="showHomeSection('howItWorks')" id="heroHow">See how it works</button></div>
+    </div><img class="heroImage" src="/assets/bavaria-fields-hero.png" alt="Bavarian agricultural fields"></section>
+  <section class="trustStrip"><div class="trustItem"><b id="trustOneTitle">Official sources, dated</b><span id="trustOneText">Bavarian programme guidance, with publisher, link and review date.</span></div><div class="trustItem"><b id="trustTwoTitle">Consent before a call</b><span id="trustTwoText">The farmer can decline. No value is invented or silently retried.</span></div><div class="trustItem"><b id="trustThreeTitle">A human makes the decision</b><span id="trustThreeText">AcreVoice prepares evidence; an adviser checks and exports it.</span></div></section>
+  <section><div class="sectionLead"><h2 id="servicesTitle">What AcreVoice provides</h2><p id="servicesText">A simple route from a confusing support question to a safe next action.</p></div><div class="serviceGrid"><article class="card serviceCard"><div class="serviceIcon">01</div><h3 id="serviceOneTitle">Funding navigator</h3><p id="serviceOneText">Starts with reviewed public Bavarian programme guidance—not a guess about eligibility.</p></article><article class="card serviceCard"><div class="serviceIcon">02</div><h3 id="serviceTwoTitle">Phone support with evidence</h3><p id="serviceTwoText">Collects only the missing facts, with consent, transcript and confirmation status.</p></article><article class="card serviceCard"><div class="serviceIcon">03</div><h3 id="serviceThreeTitle">Adviser hand-off</h3><p id="serviceThreeText">Routes uncertainty to a person and exports only human-approved information.</p></article></div></section>
+  <section id="howItWorks" class="process"><div class="sectionLead"><h2 id="processTitle">How a support request becomes a safe next step</h2><p id="processText">The phone call is one step—not the decision.</p></div><div class="processSteps"><div class="processStep"><b>01</b><span id="stepOne">Choose a question</span></div><div class="processStep"><b>02</b><span id="stepTwo">See official sources</span></div><div class="processStep"><b>03</b><span id="stepThree">Request a consented callback</span></div><div class="processStep"><b>04</b><span id="stepFour">Capture evidence</span></div><div class="processStep"><b>05</b><span id="stepFive">Review, route or export</span></div></div></section>
+  <section class="splitInfo"><article class="card" id="sources"><div class="sectionLead"><h2 id="sourcesTitle">Sources and trust</h2><p id="sourcesText">Programme records are public and dated. Farm and call records are synthetic in this demonstration.</p></div><div class="sourceList"><a href="https://www.stmelf.bayern.de/foerderung" target="_blank" rel="noopener">Bavaria funding guide<small>Official programme index · Bavarian State Ministry</small></a><a href="https://www.stmelf.bayern.de/mam/cms01/agrarpolitik/dateien/merkblatt_oekoregelungen.pdf" target="_blank" rel="noopener">Eco-schemes guidance note 2025<small>Official programme rule · checked 2026-09-14</small></a><a href="https://www.stmelf.bayern.de/mam/cms01/agrarpolitik/dateien/m_mfa.pdf" target="_blank" rel="noopener">Multiple Application guidance note 2025<small>Official application guidance · checked 2026-09-14</small></a></div></article><article class="card faq" id="faq"><div class="sectionLead"><h2 id="faqTitle">Frequently asked questions</h2></div><details><summary id="faqOneQ">Does AcreVoice decide whether a farm is eligible?</summary><p id="faqOneA">No. It finds possible official guidance and prepares evidence. An authorised human adviser verifies any individual situation.</p></details><details><summary id="faqTwoQ">Is AcreVoice a government portal?</summary><p id="faqTwoA">No. It is an independent support prototype that links to public government sources and prepares a hand-off for the official process.</p></details><details><summary id="faqThreeQ">What data is real?</summary><p id="faqThreeA">Programme sources are public. The farms, fields, calls and answers in this hackathon demo are synthetic.</p></details><details><summary id="faqFourQ">Can a German-speaking farmer use it?</summary><p id="faqFourA">Yes. The workspace supports German and English call language. The judge demo defaults to English for clarity.</p></details></article></section>
+  <footer class="homeFooter" id="homeFooter">AcreVoice is a hackathon prototype. It does not submit applications or make eligibility decisions.</footer>
+</section>
+
+<section id="listView" class="card">
+  <div class="navigator">
+    <h2 id="navigatorTitle">Förderlotse</h2><p id="navigatorIntro">Find dated official Bavaria guidance, then collect evidence only with consent.</p><p id="dataNote" class="dataNote"></p>
+    <div class="navigatorForm">
+      <label><span id="navigatorHoldingLabel">Holding</span><input id="supportHolding" value="Demo Farm — not a real applicant"></label>
+      <label><span id="navigatorTopicLabel">Topic</span><select id="supportTopic"><option value="eco_scheme">Eco-schemes (Öko-Regelungen)</option><option value="multiple_application">Multiple Application (Mehrfachantrag)</option></select></label>
+      <button type="button" id="createSupportBtn" onclick="createSupportGoal()">Start support goal</button>
+    </div>
+  </div>
+  <h2 id="hCases"></h2>
+  <div class="tableWrap">
+    <table class="casesTable" id="casesTable">
+      <thead><tr>
+        <th scope="col" id="tcHolding"></th>
+        <th scope="col" id="tcScheme"></th>
+        <th scope="col" id="tcYear"></th>
+        <th scope="col" id="tcMissing"></th>
+        <th scope="col" id="tcStatus"></th>
+        <th scope="col" id="tcActivity"></th>
+      </tr></thead>
+      <tbody id="casesBody"></tbody>
+    </table>
+  </div>
+</section>
+
+<section id="journey" class="journey" hidden aria-live="polite">
+  <h2 id="journeyTitle"></h2>
+  <p id="journeySummary"></p>
+  <div id="journeySteps" class="journeySteps"></div>
+</section>
+
+<div class="grid" id="detailView" hidden>
+  <section class="card">
+    <button type="button" class="secondary" id="backBtn" onclick="showCaseList()" style="margin-bottom:14px"></button>
+    <h2 id="hCase"></h2>
+    <div id="caseMeta"></div>
+    <div id="goal" class="goal" aria-live="polite"></div>
+    <label for="scenario" id="scenarioLabel"></label>
+    <select id="scenario"><option value="confirmed">Confirmed</option><option value="uncertain">Uncertain</option><option value="refused">Refused</option><option value="unreachable">Unreachable</option><option value="configuration">Configuration</option></select>
+    <div class="actions">
+      <button id="callBtn" onclick="startCall()"></button>
+      <label class="live"><input type="checkbox" id="live"> <span id="lblReal"></span></label>
+    </div>
+    <div id="callHint" class="muted" style="margin-top:10px"></div>
+  </section>
+
+  <section class="card">
+    <h2 id="hReview"></h2>
+    <div id="schemeInfo"></div>
+    <div id="banner"></div>
+    <div class="tableWrap">
+      <table class="fieldsTable" id="fieldsTable">
+        <thead><tr>
+          <th scope="col" class="sr-only" id="thSelect"></th>
+          <th scope="col" id="thField"></th>
+          <th scope="col" id="thOriginal"></th>
+          <th scope="col" id="thProposed"></th>
+          <th scope="col" id="thQuestion"></th>
+          <th scope="col" id="thConfirm"></th>
+          <th scope="col" id="thTime"></th>
+        </tr></thead>
+        <tbody id="fields"></tbody>
+      </table>
+    </div>
+    <details id="rawDetails"><summary id="rawSummary"></summary><pre id="rawJson"></pre></details>
+    <div class="actions">
+      <button id="reviewBtn" class="secondary" onclick="approve()" disabled></button>
+    </div>
+    <h3 id="hEvidence"></h3>
+    <div id="callHistory"></div>
+    <div id="timeline" class="timeline"><p class="muted">No events yet.</p></div>
+    <h3 id="hPackage"></h3>
+    <div id="out"></div>
+  </section>
+</div>
+</main>
+
+<div id="toast" role="alert" hidden></div>
+<div id="spinner" role="status" aria-live="polite" hidden>
+  <div class="spin"></div><span id="spinnerText"></span>
+</div>
+<script>
+let CASE=null, CASES=[], POLL=null, T={}, CFG={}, LANG=localStorage.getItem('acrevoice.lang')||'en';
+let SELECTED=0, VIEW='list';
+
+const api=async(p,o)=>{
+  let r;
+  try{r=await fetch(p,o)}catch{throw new Error('network error')}
+  if(!r.ok){
+    let msg=String(r.status);
+    try{const body=await r.json(); msg=body.error||body.detail||msg}catch{}
+    throw new Error(msg);
+  }
+  return r.json();
+};
+
+// A blocking overlay for any request that takes noticeably long: CSV import,
+// placing/monitoring a call, generating the correction package. Never left
+// showing across a view switch - showCaseList() clears it defensively too.
+function showSpinner(text){
+  document.getElementById('spinnerText').textContent=text||T.loading_text||'';
+  document.getElementById('spinner').hidden=false;
+}
+function hideSpinner(){document.getElementById('spinner').hidden=true}
+
+// A transient, dismiss-itself error banner. Farmer-facing and adviser-facing
+// text both come from T (locale.py) - never the raw exception message, which
+// may be untranslated or leak implementation detail.
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.hidden=false;
+  clearTimeout(t._timer);
+  t._timer=setTimeout(()=>{t.hidden=true},6000);
+}
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt=(tpl,vals)=>String(tpl||'').replace(/\{(\w+)\}/g,(_,k)=>esc(vals?.[k]??''));
+const STATUS_CLASS={needs_information:'warn',call_in_progress:'warn',awaiting_review:'ok',
+  needs_follow_up:'bad',closed:'ok'};
+const EN_HOLDINGS={
+  'Bayerischer Musterbetrieb':'Bavarian Sample Farm',
+  'Kastner Blühwiesenhof':'Kastner Flower Meadow Farm',
+  'Gruber Landwirtschaft':'Gruber Farm',
+  'Mayr Hof':'Mayr Farm',
+  'Hof Müller':'Müller Farm',
+  'Gruber Ackerbau GbR, Regensburg':'Gruber Arable Farm Ltd., Regensburg',
+};
+const EN_SCHEMES={'ÖR2':'Eco-scheme 2','ÖR4':'Eco-scheme 4','ÖR1b':'Eco-scheme 1b',
+  'GLÖZ 6':'Good Agricultural and Environmental Condition 6','GLÖZ 8':'Good Agricultural and Environmental Condition 8'};
+
+// A localised value may arrive either fully resolved (a plain string, today's API)
+// or still keyed by language (the shape schemes.py uses). Accept either so the
+// console keeps working while the scheme-aware backend lands.
+function pick(x){
+  if(x==null)return '';
+  if(typeof x==='string')return x;
+  if(typeof x==='object')return x[LANG]||x.de||x.en||Object.values(x)[0]||'';
+  return String(x);
+}
+
+// A field name the console has no label for must still read as words, never
+// as a raw identifier.
+function lbl(f){return T.field_labels?.[f]||String(f||'').replace(/_/g,' ')}
+function statusLabel(s){return T['status_'+s]||s}
+function holdingLabel(name){
+  const english=EN_HOLDINGS[name];
+  return LANG==='en'&&english?`${english} (${name})`:name;
+}
+function schemeLabel(code){
+  return LANG==='en'&&EN_SCHEMES[code]?`${code} (${EN_SCHEMES[code]})`:code;
+}
+
+// An unconfirmed answer and an approximate-but-confirmed one need different
+// words, not just a colour: greyed-out checkboxes alone hid what was actually
+// uncertain about a value.
+function confirmationStatus(a){
+  if(a.approximate)return {cls:'warn',text:fmt(T.status_approximate,{value:a.spoken||a.answer})};
+  if(!a.confirmed)return {cls:'bad',text:T.status_unconfirmed};
+  return {cls:'ok',text:T.status_confirmed};
+}
+
+async function setConsoleLang(lang){
+  LANG=lang; localStorage.setItem('acrevoice.lang',lang);
+  T=await api('/api/i18n/'+lang);
+  document.documentElement.lang=lang;
+  paintChrome(); renderCaseList(); if(CASE)render();
+}
+
+function paintChrome(){
+  document.getElementById('navigatorTitle').textContent=LANG==='de'?'Förderlotse · Bayern':'Funding navigator · Bavaria';
+  document.getElementById('navigatorIntro').textContent=LANG==='de'?'Geprüfte offizielle Quellen zeigen, Rückruf nur mit Einwilligung starten und jede Aussage für die menschliche Prüfung festhalten.':'Show reviewed official sources, request a callback only with consent, and keep evidence for human review. Judge demo calls use English; German remains available per case.';
+  document.getElementById('dataNote').textContent=LANG==='de'?'Datenherkunft: Programm- und Quellenangaben sind öffentliche, datierte Informationen des Bayerischen Landwirtschaftsministeriums. Betriebs- und Anrufdaten in dieser Demo sind ausdrücklich synthetisch.':'Data provenance: programme and source records are dated public information from the Bavarian Ministry of Agriculture. Farm and call records in this demo are explicitly synthetic.';
+  document.getElementById('navigatorHoldingLabel').textContent=LANG==='de'?'Betrieb':'Holding';
+  document.getElementById('navigatorTopicLabel').textContent=LANG==='de'?'Thema':'Topic';
+  document.getElementById('createSupportBtn').textContent=LANG==='de'?'Unterstützungsfall starten':'Start support goal';
+  const topicOptions=document.getElementById('supportTopic').options;
+  topicOptions[0].textContent=LANG==='de'?'Öko-Regelungen (Eco-schemes)':'Eco-schemes (Öko-Regelungen)';
+  topicOptions[1].textContent=LANG==='de'?'Mehrfachantrag (Multiple Application)':'Multiple Application (Mehrfachantrag)';
+  const holding=document.getElementById('supportHolding');
+  if(!holding.dataset.edited){holding.value=LANG==='de'?'Demobetrieb — kein echter Antragsteller':'Demo Farm — not a real applicant'};
+  document.getElementById('eyebrow').textContent=`${T.app_name} · ${T.app_role}`;
+  document.getElementById('intro').textContent=T.intro;
+  document.getElementById('lblConsoleLang').textContent=T.console_language;
+  document.getElementById('hCases').textContent=T.cases_title;
+  document.getElementById('tcHolding').textContent=T.column_holding;
+  document.getElementById('tcScheme').textContent=T.column_scheme;
+  document.getElementById('tcYear').textContent=T.column_year;
+  document.getElementById('tcMissing').textContent=T.column_missing;
+  document.getElementById('tcStatus').textContent=T.column_status;
+  document.getElementById('tcActivity').textContent=T.column_activity;
+  document.getElementById('backBtn').textContent=T.back_to_list;
+  paintTitle();
+  document.getElementById('consoleLang').value=LANG;
+  document.getElementById('hCase').textContent=T.case;
+  document.getElementById('hReview').textContent=T.review;
+  document.getElementById('hEvidence').textContent=T.evidence;
+  document.getElementById('hPackage').textContent=T.package;
+  document.getElementById('lblReal').textContent=T.real_call;
+  document.getElementById('reviewBtn').textContent=T.approve_export;
+  document.getElementById('thSelect').textContent=T.select_column;
+  document.getElementById('thField').textContent=T.timeline_col_field;
+  document.getElementById('thOriginal').textContent=T.original_value;
+  document.getElementById('thProposed').textContent=T.proposed_value;
+  document.getElementById('thQuestion').textContent=T.question_asked;
+  document.getElementById('thConfirm').textContent=T.confirmation_state;
+  document.getElementById('thTime').textContent=T.timestamp;
+  document.getElementById('rawSummary').textContent=T.raw_data;
+  // Re-localise the placeholder on every language switch, but never overwrite a real
+  // export. textContent alone cannot tell the two apart once a placeholder is painted.
+  const out=document.getElementById('out');
+  if(out.dataset.placeholder!=='0')out.textContent=T.no_export;
+  document.getElementById('mode').innerHTML=CFG.live_calls_available
+    ? `<span class="pill ok">${esc(T.live_ready)}</span>` : `<span class="pill warn">${esc(T.demo_mode)}</span>`;
+  document.getElementById('callHint').textContent=CFG.live_calls_available?T.real_call_hint:T.no_phone_hint;
+  document.getElementById('importBtn').textContent=T.import_button;
+  document.getElementById('importFile').setAttribute('aria-label',T.import_label);
+  document.getElementById('scenarioLabel').textContent=T.demo_scenario;
+  for(const option of document.getElementById('scenario').options)option.textContent=T['scenario_'+option.value];
+  paintHome();
+}
+
+const HOME_TEXT_IDS=['navHome','navHow','navSources','navFaq','navWorkspace','heroEyebrow','heroTitle','heroText','heroStart','heroHow','trustOneTitle','trustOneText','trustTwoTitle','trustTwoText','trustThreeTitle','trustThreeText','servicesTitle','servicesText','serviceOneTitle','serviceOneText','serviceTwoTitle','serviceTwoText','serviceThreeTitle','serviceThreeText','processTitle','processText','stepOne','stepTwo','stepThree','stepFour','stepFive','sourcesTitle','sourcesText','faqTitle','faqOneQ','faqOneA','faqTwoQ','faqTwoA','faqThreeQ','faqThreeA','faqFourQ','faqFourA','homeFooter'];
+const HOME_DEFAULTS=Object.fromEntries(HOME_TEXT_IDS.map(id=>[id,document.getElementById(id)?.textContent||'']));
+function paintHome(){
+  if(LANG==='en')for(const [id,value] of Object.entries(HOME_DEFAULTS)){const el=document.getElementById(id);if(el)el.textContent=value}
+  if(LANG==='de'){
+    const copy={navHome:'Start',navHow:'So funktioniert es',navSources:'Quellen & Vertrauen',navFaq:'FAQ',navWorkspace:'Arbeitsbereich öffnen',heroEyebrow:'EIN ÖFFENTLICHER UNTERSTÜTZUNGSDIENST FÜR BAYERNS LANDWIRTE',heroTitle:'Klare Hinweise. Menschliche Entscheidungen. Keine verlorenen Unterlagen.',heroText:'AcreVoice hilft Landwirten, offizielle Förderinformationen zu finden, mit Einwilligung eine gezielte Frage telefonisch zu beantworten und einen nachvollziehbaren Nachweis an die Beratung zu übergeben.',heroStart:'Förderinformationen finden',heroHow:'So funktioniert es',trustOneTitle:'Offizielle Quellen, datiert',trustOneText:'Bayerische Programmhinweise mit Herausgeber, Link und Prüftermin.',trustTwoTitle:'Einwilligung vor dem Anruf',trustTwoText:'Landwirte können ablehnen. Es wird kein Wert erfunden oder automatisch erneut angerufen.',trustThreeTitle:'Menschen entscheiden',trustThreeText:'AcreVoice bereitet Nachweise vor; die Beratung prüft und exportiert.',servicesTitle:'Was AcreVoice bietet',servicesText:'Ein einfacher Weg von einer unklaren Förderfrage zum sicheren nächsten Schritt.',serviceOneTitle:'Förderlotse',serviceOneText:'Beginnt mit geprüften öffentlichen bayerischen Programmhinweisen – nicht mit einer Förderzusage.',serviceTwoTitle:'Telefonhilfe mit Nachweis',serviceTwoText:'Erfasst nur fehlende Fakten, mit Einwilligung, Transkript und Bestätigungsstatus.',serviceThreeTitle:'Übergabe an die Beratung',serviceThreeText:'Leitet Unsicherheit an Menschen weiter und exportiert nur menschlich freigegebene Informationen.',processTitle:'Wie aus einer Frage ein sicherer nächster Schritt wird',processText:'Das Telefonat ist ein Schritt – nicht die Entscheidung.',stepOne:'Frage auswählen',stepTwo:'Offizielle Quellen sehen',stepThree:'Rückruf mit Einwilligung anfordern',stepFour:'Nachweise erfassen',stepFive:'Prüfen, weiterleiten oder exportieren',sourcesTitle:'Quellen und Vertrauen',sourcesText:'Programmdaten sind öffentlich und datiert. Betriebs- und Anrufdaten dieser Demonstration sind synthetisch.',faqTitle:'Häufige Fragen',faqOneQ:'Entscheidet AcreVoice über Förderfähigkeit?',faqOneA:'Nein. Es zeigt mögliche offizielle Hinweise und bereitet Nachweise vor. Eine berechtigte menschliche Beratung prüft jeden Einzelfall.',faqTwoQ:'Ist AcreVoice ein staatliches Portal?',faqTwoA:'Nein. Es ist ein unabhängiger Unterstützungsprototyp, der auf öffentliche staatliche Quellen verweist und eine Übergabe für den offiziellen Prozess vorbereitet.',faqThreeQ:'Welche Daten sind echt?',faqThreeA:'Programmquellen sind öffentlich. Betriebe, Flächen, Anrufe und Antworten in dieser Hackathon-Demo sind synthetisch.',faqFourQ:'Können deutschsprachige Landwirte es nutzen?',faqFourA:'Ja. Der Arbeitsbereich unterstützt Deutsch und Englisch als Anrufsprache. Die Jury-Demo startet zur Verständlichkeit auf Englisch.',homeFooter:'AcreVoice ist ein Hackathon-Prototyp. Es übermittelt keine Anträge und trifft keine Förderentscheidungen.'};
+    for(const [id,value] of Object.entries(copy)){const el=document.getElementById(id);if(el)el.textContent=value}
+  }
+}
+
+// The header title says what the adviser is looking at: the whole queue, or
+// one case within it. Repainted on every language switch and every view change.
+function paintTitle(){
+  document.getElementById('title').textContent =
+    VIEW==='home' ? (LANG==='de'?'AcreVoice · Landwirtschaftliche Unterstützung':'AcreVoice · farmer support') :
+    VIEW==='list' ? `${T.cases_title} (${CASES.length})` : T.title;
+}
+
+// A relative "how long ago" string, localised. Falls back to the ISO
+// timestamp itself if it cannot be parsed - never a blank cell.
+function relativeTime(iso){
+  if(!iso)return '';
+  const then=new Date(iso);
+  if(isNaN(then))return iso;
+  const minutes=Math.max(0,Math.round((Date.now()-then.getTime())/60000));
+  if(minutes<1)return T.activity_just_now;
+  if(minutes<60)return fmt(T.activity_minutes_ago,{minutes});
+  const hours=Math.round(minutes/60);
+  if(hours<24)return fmt(T.activity_hours_ago,{hours});
+  const days=Math.round(hours/24);
+  if(days===1)return T.activity_yesterday;
+  return fmt(T.activity_days_ago,{days});
+}
+
+function renderCaseList(){
+  const rows=[...CASES].map(c=>`<tr>
+    <td><button type="button" class="linklike" onclick="showCaseDetail('${esc(c.case_id)}')">${esc(holdingLabel(c.holding_name||c.holding_id))}</button></td>
+    <td>${esc(schemeLabel(c.scheme?.code||''))}</td>
+    <td>${esc(c.application_year)}</td>
+    <td>${esc(c.missing_count)}</td>
+    <td><span class="pill ${STATUS_CLASS[c.status]||'warn'}">${esc(statusLabel(c.status))}</span></td>
+    <td>${esc(relativeTime(c.last_activity))}</td>
+  </tr>`).join('');
+  document.getElementById('casesBody').innerHTML=rows ||
+    `<tr><td colspan="6" class="emptyState">${esc(T.empty_cases_message)}</td></tr>`;
+}
+
+async function showCaseList(){
+  VIEW='list';
+  if(POLL){clearInterval(POLL);POLL=null}
+  hideSpinner();
+  document.getElementById('homeView').hidden=true;
+  document.getElementById('listView').hidden=false;
+  document.getElementById('journey').hidden=true;
+  document.getElementById('detailView').hidden=true;
+  paintTitle();
+  renderCaseList();
+  try{CASES=await api('/api/cases'); if(VIEW==='list'){paintTitle();renderCaseList()}}catch(e){showToast(e.message)}
+}
+
+async function showCaseDetail(caseId){
+  showSpinner(T.loading_text);
+  try{
+    CASE=await api('/api/cases/'+caseId);
+  }catch(e){
+    hideSpinner();
+    showToast(T.error_case_not_found);
+    return;
+  }
+  hideSpinner();
+  VIEW='detail';
+  document.getElementById('homeView').hidden=true;
+  document.getElementById('listView').hidden=true;
+  document.getElementById('journey').hidden=false;
+  document.getElementById('detailView').hidden=false;
+  paintTitle();
+  render();
+  if(CASE.status==='call_in_progress'&&!POLL)POLL=setInterval(()=>refresh().catch(e=>showToast(e.message)),2000);
+}
+
+function showHome(){
+  VIEW='home';
+  if(POLL){clearInterval(POLL);POLL=null}
+  hideSpinner();
+  document.getElementById('homeView').hidden=false;
+  document.getElementById('listView').hidden=true;
+  document.getElementById('journey').hidden=true;
+  document.getElementById('detailView').hidden=true;
+  paintTitle();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function showHomeSection(id){showHome();setTimeout(()=>document.getElementById(id).scrollIntoView({behavior:'smooth'}),0)}
+
+async function createSupportGoal(){
+  showSpinner(T.loading_text);
+  try{
+    const detail=await api('/api/support-goals',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+      holding_name:document.getElementById('supportHolding').value||'Bayerischer Musterbetrieb',
+      topic:document.getElementById('supportTopic').value,language:'en',callback_requested:true
+    })});
+    CASE=detail; hideSpinner(); VIEW='detail';
+    document.getElementById('homeView').hidden=true;document.getElementById('listView').hidden=true;document.getElementById('journey').hidden=false;document.getElementById('detailView').hidden=false;paintTitle();render();
+  }catch(e){hideSpinner();showToast(e.message)}
+}
+
+// Bulk-import a FALK-style CSV: one row per case. Reloads the queue on
+// success so the newly imported cases appear without a manual refresh.
+async function importCsv(file){
+  if(!file)return;
+  const status=document.getElementById('importStatus');
+  const body=new FormData(); body.append('file',file);
+  showSpinner(T.loading_text);
+  try{
+    const res=await api('/api/import/csv',{method:'POST',body});
+    status.textContent=fmt(T.import_success,{count:res.imported});
+    document.getElementById('importFile').value='';
+    await load();
+  }catch(e){
+    // The server already returns a German, row-specific message for a bad
+    // upload (see server.py); a generic network failure falls back to
+    // import_error so the adviser is never shown a blank status line.
+    const message=e.message==='network error'?T.import_error:e.message;
+    status.textContent=message;
+    showToast(message);
+  }finally{
+    hideSpinner();
+  }
+}
+
+function fieldRows(){return [...document.querySelectorAll('#fields .field[data-field]')]}
+
+function updateSelection(){
+  const rows=fieldRows();
+  if(SELECTED>=rows.length)SELECTED=Math.max(0,rows.length-1);
+  rows.forEach((r,i)=>{
+    const sel=i===SELECTED;
+    r.classList.toggle('selected',sel);
+    r.setAttribute('aria-selected',String(sel));
+  });
+}
+
+function moveSelection(delta){
+  const rows=fieldRows();
+  if(!rows.length)return;
+  SELECTED=(SELECTED+delta+rows.length)%rows.length;
+  updateSelection();
+  rows[SELECTED].scrollIntoView({block:'nearest'});
+}
+
+function toggleApprovalSelected(){
+  const rows=fieldRows();
+  if(!rows.length)return;
+  const cb=rows[SELECTED]?.querySelector('.approve');
+  if(!cb||cb.disabled)return; // unconfirmed fields cannot be approved
+  cb.checked=!cb.checked;
+}
+
+
+async function load(){
+  CFG=await api('/api/config');
+  document.getElementById('live').disabled=!CFG.live_calls_available;
+  T=await api('/api/i18n/'+LANG); paintChrome();
+  // The console opens on the queue (Fallliste), sorted by urgency server-side;
+  // an adviser drills into one case's full evidence only by clicking it.
+  CASES=await api('/api/cases');
+  showHome();
+}
+
+async function setCallLang(lang){
+  CASE=await api(`/api/cases/${CASE.case_id}/language`,{method:'POST',
+    headers:{'Content-Type':'application/json'},body:JSON.stringify({language:lang})});
+  render();
+}
+
+// The scheme card only appears once the backend attaches scheme context to a
+// case (T3a). Until then this renders nothing - a missing key is not a bug.
+function renderSchemeInfo(c){
+  const s=T.schemes?.[c.scheme?.code]||c.scheme;
+  if(!s)return '';
+  const name=pick(s.name), programme=pick(s.programme), summary=pick(s.summary),
+        stake=pick(s.payment ?? s.stake), source=pick(s.source);
+  const displayCode=schemeLabel(s.code);
+  const title=[displayCode,name].filter(Boolean).join(' — ');
+  return `<div class="scheme">
+    <h3>${esc(T.scheme_heading)}</h3>
+    <div class="schemeTitle"><b>${esc(title)}</b></div>
+    ${programme?`<div class="muted">${esc(programme)}</div>`:''}
+    ${summary?`<p>${esc(summary)}</p>`:''}
+    ${stake?`<div class="stake"><b>${esc(T.at_stake)}:</b> ${esc(stake)}</div>`:''}
+    ${source?`<div class="muted" style="margin-top:6px;font-size:12px;overflow-wrap:anywhere">${esc(T.source_label)}: ${source.startsWith('https://')?`<a href="${esc(source)}" target="_blank" rel="noopener">${esc(T.source_label)}</a>`:esc(source)}</div>`:''}
+  </div>`;
+}
+
+function renderSupportGoal(c){
+  const goal=c.support_goal;if(!goal)return '';
+  const copy=LANG==='de'?{
+    title:'Förderlotse: Nachweis vor Beratung',source:'Öffentliche Quelle',checked:'Geprüft',review:'Nächste Quellenprüfung',facts:'Für die Beratung klären',disclaimer:goal.eligibility_disclaimer,route:'An Fachberatung weiterleiten',routeHelp:'Wenn etwas unklar, abgelehnt oder nicht telefonisch geklärt werden kann.',document:'Dokumentstand',type:'Datentyp'
+  }:{title:'Funding navigator: evidence before advice',source:'Official source',checked:'Checked',review:'Review source by',facts:'Facts for the adviser',disclaimer:goal.eligibility_disclaimer,route:'Route to an adviser',routeHelp:'Use when a request is unclear, declined, or cannot safely be resolved by phone.'};
+  if(LANG==='en'){copy.document='Document date';copy.type='Data type'}
+  const cards=(goal.source_cards||[]).map(s=>`<div class="sourceCard"><b>${esc(copy.source)}: ${esc(s.title)}</b><p>${esc(s.scope)}</p><p><b>${esc(s.publisher_display||s.publisher)}</b><br>${esc(copy.type)}: ${esc(s.record_type)} · ${esc(copy.document)}: ${esc(s.document_date)}<br>${esc(copy.checked)}: ${esc(s.checked_at)} · ${esc(copy.review)}: ${esc(s.review_by)}</p><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.url)}</a><p class="muted">${esc(copy.facts)}: ${esc((s.required_facts||[]).join(', '))}</p></div>`).join('');
+  const route=goal.expert_route&&goal.expert_route.reason?`<div class="routeBox"><b>${esc(copy.route)}</b><br>${esc(goal.expert_route.reason)}<br>${esc(goal.expert_route.question||'')}</div>`:`<div class="actions"><button type="button" class="secondary" onclick="routeToExpert()">${esc(copy.route)}</button></div>`;
+  return `<div class="scheme"><h3>${esc(copy.title)}</h3><p><span class="pill warn">${esc(goal.goal_step.replace(/_/g,' '))}</span></p><p class="note">${esc(copy.disclaimer)}</p>${cards}${route}<p class="muted">${esc(copy.routeHelp)}</p></div>`;
+}
+
+// The product is a hand-off, not a collection of developer features. Keep the
+// five customer-visible stages in the case header so an adviser (or a judge)
+// can see where this record is blocked and what happens next.
+function renderJourney(c){
+  let active=1;
+  if(c.support_goal){
+    const map={source_guidance_ready:0,awaiting_callback:1,evidence_captured:2,human_review:3,expert_routing:3,exported:4};
+    active=map[c.support_goal.goal_step]??0;
+  }
+  if(c.correction_package)active=4;
+  else if(c.status==='awaiting_review')active=3;
+  else if((c.call_history||[]).length)active=2;
+  const steps=[T.journey_problem,T.journey_call,T.journey_evidence,T.journey_approval,T.journey_export];
+  document.getElementById('journeyTitle').textContent=c.support_goal
+    ? (LANG==='de'?'Von der Frage zur sicheren Beratung':'From question to safe advice') : T.journey_title;
+  document.getElementById('journeySummary').textContent=c.support_goal
+    ? (LANG==='de'?'Quellen, Rückrufnachweise und menschliche Freigabe bleiben in einem nachvollziehbaren Unterstützungsfall.' :'Sources, callback evidence and human review stay in one traceable support goal.')
+    : fmt(T.journey_summary,{count:c.missing_fields.length});
+  document.getElementById('journeySteps').innerHTML=steps.map((step,index)=>{
+    const state=index<active?'done':index===active?'active':'';
+    return `<div class="journeyStep ${state}" data-number="${index+1}">${esc(step)}</div>`;
+  }).join('');
+}
+
+function fieldsHtml(c){
+  const fieldMeta=Object.fromEntries((c.fields||[]).map(f=>[f.name,f]));
+  const answersByField=Object.fromEntries((c.answers||[]).map(a=>[a.field,a]));
+  return c.missing_fields.map(f=>{
+    const meta=fieldMeta[f]||{};
+    const a=answersByField[f];
+    const label=lbl(f);
+    const why=T.field_reasons?.[f]||(a&&a.why)||pick(meta.why)||'';
+
+    if(!a){
+      return `<tr class="field awaiting" data-field="${esc(f)}" role="option" aria-selected="false">
+        <td></td>
+        <td><div class="fieldName">${esc(label)}</div>${why?`<div class="why">${esc(why)}</div>`:''}</td>
+        <td colspan="5"><span class="pill warn">${esc(T.awaiting_call)}</span></td>
+      </tr>`;
+    }
+
+    const ok=c.confirmed_fields.includes(f)&&!a.approximate&&c.status!=='closed'&&c.status!=='call_in_progress';
+    // original_value travels on the scheme field (T3a); the case no longer
+    // carries a bare original_record for the console to reach into.
+    const orig=pick(meta.original_value)||'—';
+    const ts=a.captured_at?esc(a.captured_at.replace('T',' ').slice(0,19))+' UTC':'—';
+    const spoken=a.spoken&&a.spoken!==a.answer
+      ?`<div class="spoken">${esc(T.spoken_label)}: ${esc(a.spoken)}</div>`:'';
+    const st=confirmationStatus(a);
+    return `<tr class="field ${ok?'confirmed':'unconfirmed'}" data-field="${esc(f)}" role="option" aria-selected="false">
+      <td><input type="checkbox" class="approve" value="${esc(f)}" ${ok?'checked':'disabled'} aria-label="${esc(T.select_column)}"></td>
+      <td><div class="fieldName">${esc(label)}</div>${why?`<div class="why">${esc(why)}</div>`:''}</td>
+      <td class="old">${esc(orig)}</td>
+      <td class="new">${esc(a.answer)}${spoken}</td>
+      <td class="q">${esc(a.question)}</td>
+      <td><span class="pill ${st.cls}">${esc(st.text)}</span></td>
+      <td class="ts">${ts}</td>
+    </tr>`;
+  }).join('');
+}
+
+// Every event kind the store can emit gets a plain-language sentence. A kind
+// this console does not recognise falls back to a generic phrase - it never
+// prints the raw identifier to a caseworker.
+function timelineText(e){
+  switch(e.event){
+    case 'support_request_received': return LANG==='de'?'Unterstützungsanfrage erfasst':'Support request recorded';
+    case 'sources_selected': return LANG==='de'?'Geprüfte offizielle Quellen ausgewählt':'Reviewed official sources selected';
+    case 'goal_step_changed': return LANG==='de'?`Zielschritt: ${String(e.step||'').replace(/_/g,' ')}`:`Goal step: ${String(e.step||'').replace(/_/g,' ')}`;
+    case 'expert_routed': return LANG==='de'?'An Fachberatung weitergeleitet':'Routed to an adviser';
+    case 'case_imported': return T.tl_case_imported;
+    case 'missing_fields_identified': return T.tl_missing_fields_identified;
+    case 'answer_captured': return fmt(T.tl_answer_captured,{field:e.label||lbl(e.field)});
+    case 'reviewed': return fmt(T.tl_reviewed,{reviewer:e.reviewer||''});
+    case 'call_started': return T.tl_call_started;
+    case 'call_ended': return fmt(T.tl_call_ended,{outcome:T['outcome_'+e.outcome]||e.outcome||''});
+    case 'call_failed': return T.tl_call_failed;
+    case 'call_configuration_error': return T.tl_call_configuration_error;
+    case 'transcript_recorded': return T.tl_transcript_recorded;
+    case 'call_language_changed': return fmt(T.tl_call_language_changed,{language:e.language==='de'?'Deutsch':'English'});
+    default: return T.tl_unknown_event;
+  }
+}
+
+function renderTimeline(c){
+  const tl=document.getElementById('timeline');
+  if(!c.timeline.length){tl.innerHTML=`<p class="muted">${esc(T.no_events)}</p>`;return}
+  let status=null;
+  const header=`<div class="tl print-only"><b>${esc(T.timeline_col_time)}</b><div><b>${esc(T.timeline_col_event)}</b></div></div>`;
+  const rows=c.timeline.map(e=>{
+    let text;
+    if(e.event==='case_imported'){status=e.status; text=timelineText(e)}
+    else if(e.event==='status_changed'){
+      const oldS=status; status=e.status;
+      text=fmt(T.tl_status_changed,{old:statusLabel(oldS??e.status),new:statusLabel(e.status)});
+    } else {
+      text=timelineText(e);
+    }
+    return `<div class="tl"><time>${esc((e.at||'').slice(0,19).replace('T',' '))} UTC</time><div>${esc(text)}</div></div>`;
+  }).join('');
+  tl.innerHTML=header+rows;
+}
+
+function render(){
+  const c=CASE, cls=STATUS_CLASS[c.status]||'warn', label=T['status_'+c.status]||c.status;
+  const langOpts=CFG.languages.map(l=>
+    `<option value="${l}" ${c.language===l?'selected':''}>${l==='de'?'Deutsch':'English'}</option>`).join('');
+  document.getElementById('hCase').textContent=c.support_goal?(LANG==='de'?'Unterstützungsfall':'Support goal'):T.case;
+  document.getElementById('caseMeta').innerHTML=`
+    <div class="row"><span class="muted">${esc(T.case)}</span><b style="font-family:ui-monospace,monospace;font-size:12px">${esc(c.case_id)}</b></div>
+    <div class="row"><span class="muted">${esc(T.holding)}</span><b>${esc(c.holding_name||c.holding_id)}</b></div>
+    <div class="row"><span class="muted">${esc(T.year)}</span><b>${esc(c.application_year)}</b></div>
+    <div class="row"><span class="muted">${esc(T.call_language)}</span>
+      <select class="callLang" aria-label="${esc(T.call_language)}" onchange="setCallLang(this.value).catch(e=>showToast(e.message))" ${['closed','call_in_progress'].includes(c.status)?'disabled':''}>${langOpts}</select>
+      <b class="print-only">${c.language==='de'?'Deutsch':'English'}</b></div>
+    <div class="row"><span class="muted">${esc(T.status)}</span><span class="pill ${cls}">${esc(label)}</span></div>
+    <div class="row"><span class="muted">${esc(T.missing_at_import)}</span><b>${c.missing_fields.length}</b></div>
+    <div class="row"><span class="muted">${esc(T.confirmed_by_farmer)}</span><b>${c.confirmed_fields.length} / ${c.missing_fields.length}</b></div>`;
+
+  renderJourney(c);
+
+  const inProgress=c.status==='call_in_progress';
+  const btn=document.getElementById('callBtn');
+  const callbackUnavailable=!!c.support_goal&&c.support_goal.goal_step!=='awaiting_callback';
+  btn.disabled=inProgress||c.status==='closed'||!c.missing_fields.length||callbackUnavailable;
+  btn.textContent=inProgress?T.call_running:(c.support_goal&&LANG==='de'?'Rückruf mit Einwilligung starten':T.start_call);
+  document.getElementById('scenario').disabled=inProgress||document.getElementById('live').checked;
+  document.getElementById('goal').innerHTML=`<span>${esc(T.goal_title)}</span><strong>${c.confirmed_fields.length} / ${c.missing_fields.length}</strong><progress aria-label="${esc(T.goal_title)}" max="${c.missing_fields.length||1}" value="${c.confirmed_fields.length}"></progress><p>${esc(T['next_'+c.next_action]||'')}</p>`;
+
+  document.getElementById('schemeInfo').innerHTML=renderSupportGoal(c)+renderSchemeInfo(c);
+
+  document.getElementById('banner').innerHTML =
+    ['configuration','failed','refused','unreachable','follow_up'].includes(c.next_action)
+      ? `<div class="banner ${['configuration','failed'].includes(c.next_action)?'bad':'warn'}">${esc(T['next_'+c.next_action])}</div>` : '';
+
+  document.getElementById('fields').innerHTML=fieldsHtml(c);
+  document.getElementById('rawJson').textContent=JSON.stringify(
+    {missing_fields:c.missing_fields, fields:c.fields||null, answers:c.answers}, null, 2);
+  document.getElementById('reviewBtn').disabled=!c.confirmed_fields.length||c.status==='closed'||inProgress||!!(c.support_goal&&c.support_goal.goal_step!=='human_review');
+  updateSelection();
+
+  renderTimeline(c);
+  document.getElementById('callHistory').innerHTML=(c.call_history||[]).map((call,i)=>`<div class="call-entry"><b>${esc(T.call_attempt)} ${i+1} · ${esc(call.provider==='demo'?T.demo_mode:call.provider==='call-e'?'CALL-E':T.call_attempt)}</b><p>${esc(T['outcome_'+call.outcome]||T['next_'+call.outcome]||call.outcome)}</p>${call.provider_call_id?`<small>${esc(call.provider_call_id)}</small>`:''}${call.transcript.length?`<details><summary>${esc(T.transcript_title)}</summary>${call.transcript.map(t=>`<p><b>${esc(t.speaker)}</b> ${esc(t.text)}</p>`).join('')}</details>`:''}</div>`).join('');
+  const out=document.getElementById('out');
+  out.dataset.placeholder=c.correction_package?'0':'1';
+  out.innerHTML=c.correction_package?formatCorrectionPackage(c.correction_package):esc(T.no_export);
+}
+
+async function refresh(){
+  const id=CASE?.case_id;if(!id||VIEW!=='detail')return;
+  const updated=await api('/api/cases/'+id);
+  if(CASE?.case_id!==id||VIEW!=='detail')return;
+  CASE=updated;
+  render();
+  if(CASE.status!=='call_in_progress'){
+    if(POLL){clearInterval(POLL);POLL=null}
+    hideSpinner();
+  }
+}
+
+// The spinner stays up for the whole call - from the moment the adviser
+// clicks "start call" until the background call finishes - not just the
+// initial request, since the farmer conversation itself takes the time.
+async function startCall(){
+  const live=document.getElementById('live').checked;
+  if(live&&!confirm(T.confirm_real_call))return;
+  showSpinner(T.loading_text);
+  try{
+    const path=CASE.support_goal?`/api/support-goals/${CASE.case_id}/callback`:`/api/cases/${CASE.case_id}/call`;
+    await api(path,{method:'POST',
+      headers:{'Content-Type':'application/json'},body:JSON.stringify({live,scenario:document.getElementById('scenario').value})});
+    await refresh(); if(CASE.status==='call_in_progress'&&!POLL)POLL=setInterval(()=>refresh().catch(e=>{hideSpinner();showToast(e.message)}),2000);
+  }catch(e){
+    hideSpinner();
+    showToast(e.message||T.error_call_failed);
+  }
+}
+
+// The correction package is what an adviser retypes into the government
+// portal by hand, so it has to read as a table, not a JSON blob. The raw
+// payload stays available underneath for anyone who needs to check it.
+function formatCorrectionPackage(pkg){
+  const holdingName=CASE?.holding_name||CASE?.holding_id||pkg.holding_id;
+  const heading=`${T.package.toUpperCase()} — ${T.case}: ${esc(pkg.case_id)} (${esc(holdingName)})`;
+  const rows=(pkg.changes||[]).map(ch=>`<tr>
+    <td class="fieldName">${esc(lbl(ch.field))}</td>
+    <td class="old">${esc(ch.original||'—')}</td>
+    <td class="new">${esc(ch.proposed)}</td>
+    <td><span class="pill ${ch.confirmed?'ok':'bad'}">${ch.confirmed?'✓':'✕'}</span></td>
+    <td class="q">${esc(ch.question)}</td>
+    <td class="ts">${esc((ch.captured_at||'').slice(0,10))}</td>
+  </tr>`).join('');
+  const table=rows ? `<div class="tableWrap"><table class="fieldsTable">
+      <thead><tr>
+        <th scope="col">${esc(T.table_field)}</th>
+        <th scope="col">${esc(T.table_original)}</th>
+        <th scope="col">${esc(T.table_proposed)}</th>
+        <th scope="col">${esc(T.table_confirmed)}</th>
+        <th scope="col">${esc(T.table_question)}</th>
+        <th scope="col">${esc(T.table_captured)}</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table></div>` : `<p class="muted">${esc(T.no_export)}</p>`;
+  return `<p style="font-weight:700">${heading}</p>${table}
+    <div class="actions"><a class="download" href="/api/cases/${encodeURIComponent(pkg.case_id)}/export.csv">${esc(T.download_csv)}</a><a class="download" href="/api/cases/${encodeURIComponent(pkg.case_id)}/export.json">${esc(T.download_json)}</a><button onclick="window.print()">${esc(T.print_package)}</button></div>
+    <details><summary>${esc(T.raw_data)}</summary><pre>${esc(JSON.stringify(pkg,null,2))}</pre></details>`;
+}
+
+async function approve(){
+  const picked=[...document.querySelectorAll('.approve:checked')].map(i=>i.value);
+  if(!picked.length)return alert(T.select_one);
+  showSpinner(T.loading_text);
+  try{
+    const path=CASE.support_goal?`/api/support-goals/${CASE.case_id}/review`:`/api/cases/${CASE.case_id}/review`;
+    const pkg=await api(path,{method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({approved_fields:picked,reviewer:'Demo adviser'})});
+    const out=document.getElementById('out');
+    out.innerHTML=formatCorrectionPackage(pkg); out.dataset.placeholder='0';
+    await refresh();
+  }catch(e){
+    showToast(e.message==='network error'?T.error_call_failed:e.message);
+  }finally{
+    hideSpinner();
+  }
+}
+async function routeToExpert(){
+  showSpinner(T.loading_text);
+  try{CASE=await api(`/api/support-goals/${CASE.case_id}/route`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+    reason:'Requested by adviser',question:'Please verify the official source and holding facts before advising.'
+  })});render();}catch(e){showToast(e.message)}finally{hideSpinner()}
+}
+document.getElementById('live').addEventListener('change',()=>render());
+document.getElementById('supportHolding').addEventListener('input',e=>{e.target.dataset.edited='1'});
+load().catch(e=>showToast(e.message));
+</script></body></html>

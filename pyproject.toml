@@ -1,0 +1,28 @@
+[project]
+name = "acrevoice"
+version = "0.1.0"
+description = "Traceable phone-based completion of missing agricultural records"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+dependencies = [
+    "strands-agents>=1.55",
+    "strands-agents-tools>=0.8",
+    "calle-ai>=0.7",
+    "fastapi>=0.141",
+    "uvicorn[standard]>=0.52",
+    "python-multipart>=0.0.20",
+    "openai>=2.54",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=9.0", "httpx>=0.28"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+acrevoice = ["static/*.html"]

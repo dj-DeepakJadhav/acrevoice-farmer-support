@@ -1,0 +1,12 @@
+boto3==1.43.93
+calle-ai==0.7.0
+fastapi==0.141.1
+openai==2.54.0
+pydantic==2.13.5
+pydantic_core==2.46.5
+pytest==9.1.1
+strands-agents-tools==0.8.8
+strands-agents==1.55.1
+uvicorn==0.52.4
+python-multipart==0.0.32
+httpx==0.28.1
