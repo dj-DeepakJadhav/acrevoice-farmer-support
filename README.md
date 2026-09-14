@@ -4,7 +4,12 @@
 
 AcreVoice is a farmer-support workspace for finding public programme guidance, resolving missing case information by phone with consent, and handing a reviewable evidence package to a human adviser. It is designed for Bavarian agriculture services, with English and German support.
 
-![AcreVoice architecture](src/acrevoice/static/assets/architecture.svg)
+![AcreVoice current runtime architecture](src/acrevoice/static/assets/acrevoice-runtime-architecture.png)
+
+The adviser workspace includes an **Evidence Passport** for each missing fact:
+source, question, spoken answer, confirmation, recorded value, and human next
+step stay visible together. The local rehearsal also includes an explicit
+uncertainty route that holds hedged answers rather than guessing.
 
 ## What it does
 

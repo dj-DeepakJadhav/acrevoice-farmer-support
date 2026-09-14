@@ -13,6 +13,8 @@ __pycache__/
 
 # Local planning and audit material stays on the developer machine.
 docs/
+# Local recording helper; the rendered final video is also kept outside Git.
+scripts/create_submission_video.py
 SECURITY.md
 .venv/
 venv/

@@ -2,10 +2,10 @@
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>AcreVoice adviser console</title>
 <style>
-:root{--bg:#f3f6f4;--card:#fff;--ink:#16302a;--muted:#4e655b;--line:#dde7e1;--green:#1f6b4a;--green-soft:#e8f2ec;
---amber:#8a6d0b;--amber-soft:#fdf4d7;--red:#9b2c2c;--red-soft:#fbe9e9;--radius:12px}
+:root{--bg:#f4f6f1;--card:rgba(255,255,255,.92);--ink:#122d25;--muted:#53675f;--line:#dbe5df;--green:#176c4b;--green-deep:#0f4534;--green-soft:#e6f2ea;
+--amber:#8a6d0b;--amber-soft:#fdf4d7;--red:#9b2c2c;--red-soft:#fbe9e9;--radius:16px;--shadow:0 10px 30px rgba(18,45,37,.07);--shadow-raised:0 16px 40px rgba(18,45,37,.13)}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}
+body{margin:0;background:radial-gradient(circle at 85% -10%,#dcece0 0,transparent 31rem),var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}
 body:has(#homeView:not([hidden])){background:#f7f8f3}
 main{max-width:1440px;margin:0 auto;padding:32px 24px 64px}
 button,select,summary,.download{min-height:44px}
@@ -15,9 +15,9 @@ button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible,su
 .navigator{margin:0 0 22px;padding:18px;border:1px solid #b9d7c5;border-radius:10px;background:var(--green-soft)}
 .navigator h2{margin:0 0 4px}.navigator p{margin:0 0 12px;color:var(--muted)}.navigatorForm{display:flex;gap:9px;flex-wrap:wrap;align-items:end}.navigatorForm label{display:grid;gap:4px;font-size:12px;font-weight:700}.navigatorForm input,.navigatorForm select{min-height:42px;padding:7px;border:1px solid var(--line);border-radius:7px;background:#fff;color:var(--ink)}
 .dataNote{margin:12px 0 0!important;padding:9px 11px;border-left:3px solid var(--green);background:#fff;border-radius:5px;font-size:13px}
-.topnav{display:flex;gap:15px;align-items:center;flex-wrap:wrap;margin:16px 0 22px;border-top:1px solid var(--line);padding-top:14px}.topnav button{background:transparent;color:var(--muted);padding:6px 0;min-height:auto;font-size:13px}.topnav button.primaryNav{margin-left:auto;background:var(--green);color:#fff;padding:9px 14px}
+.topnav{position:sticky;top:10px;z-index:20;display:flex;gap:15px;align-items:center;flex-wrap:wrap;margin:16px 0 22px;padding:10px 14px;border:1px solid rgba(219,229,223,.9);border-radius:14px;background:rgba(255,255,255,.78);box-shadow:0 6px 20px rgba(18,45,37,.06);backdrop-filter:blur(14px)}.topnav button{background:transparent;color:var(--muted);padding:6px 2px;min-height:auto;font-size:13px}.topnav button:not(.primaryNav):not(:disabled):hover{background:transparent;color:var(--green-deep);transform:none;box-shadow:none}.topnav button.primaryNav{margin-left:auto;background:var(--green);color:#fff;padding:9px 14px;box-shadow:0 4px 12px rgba(23,108,75,.24)}
 .hero{position:relative;overflow:hidden;min-height:445px;border-radius:18px;background:#173d31;color:#fff;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(330px,.9fr);align-items:stretch}.heroCopy{position:relative;z-index:2;padding:60px 46px;display:flex;flex-direction:column;justify-content:center;background:linear-gradient(90deg,rgba(18,52,42,.98),rgba(18,52,42,.90),rgba(18,52,42,.38))}.heroImage{width:100%;height:100%;object-fit:cover;min-height:445px}.hero h1{font-size:clamp(36px,4.6vw,60px);line-height:1.05;margin:10px 0 18px;letter-spacing:-.04em}.hero p{font-size:18px;max-width:580px;color:#e2eee6;margin:0 0 25px}.hero .eyebrow{color:#b8dfc6}.heroActions{display:flex;gap:12px;flex-wrap:wrap}.heroActions button{background:#fff;color:var(--ink)}.heroActions .secondary{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.55)}
-.trustStrip{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin:18px 0 45px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}.trustItem{padding:18px;background:#fff}.trustItem b{display:block;font-size:14px}.trustItem span{display:block;color:var(--muted);font-size:13px;margin-top:3px}.sectionLead{max-width:720px;margin:0 0 22px}.sectionLead h2{font-size:28px;margin-bottom:6px}.sectionLead p{color:var(--muted);margin:0}.serviceGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:46px}.serviceCard{padding:22px}.serviceIcon{width:36px;height:36px;display:grid;place-items:center;background:var(--green-soft);border-radius:9px;color:var(--green);font-weight:800;margin-bottom:16px}.serviceCard h3{margin:0 0 7px;color:var(--ink);font-size:16px;text-transform:none;letter-spacing:0}.serviceCard p{color:var(--muted);margin:0;font-size:14px}.process{background:#e8f2ec;border-radius:16px;padding:32px;margin-bottom:46px}.processSteps{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:20px}.processStep{padding:14px 12px;background:#fff;border-radius:9px;font-size:13px}.processStep b{display:block;color:var(--green);font-size:11px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}.splitInfo{display:grid;grid-template-columns:1.1fr .9fr;gap:20px;margin-bottom:46px}.sourceList a{display:block;padding:12px 0;border-bottom:1px solid var(--line);color:var(--green);font-weight:700;text-decoration:none}.sourceList a small{display:block;color:var(--muted);font-weight:400;margin-top:2px}.faq details{margin:0;border-bottom:1px solid var(--line);padding:12px 0}.faq details summary{font-size:15px;color:var(--ink)}.faq details p{color:var(--muted);max-width:680px;margin:10px 0 4px}.homeFooter{border-top:1px solid var(--line);padding:22px 0;color:var(--muted);font-size:13px}
+.trustStrip{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin:18px 0 45px;background:var(--line);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}.trustItem{padding:18px;background:#fff}.trustItem b{display:block;font-size:14px}.trustItem span{display:block;color:var(--muted);font-size:13px;margin-top:3px}.sectionLead{max-width:720px;margin:0 0 22px}.sectionLead h2{font-size:28px;margin-bottom:6px;letter-spacing:-.025em}.sectionLead p{color:var(--muted);margin:0}.serviceGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:46px}.serviceCard{padding:22px;box-shadow:var(--shadow);transition:transform .2s ease,box-shadow .2s ease}.serviceCard:hover{transform:translateY(-3px);box-shadow:var(--shadow-raised)}.serviceIcon{width:40px;height:40px;display:grid;place-items:center;background:var(--green-soft);border-radius:12px;color:var(--green);font-weight:800;margin-bottom:16px}.serviceCard h3{margin:0 0 7px;color:var(--ink);font-size:16px;text-transform:none;letter-spacing:0}.serviceCard p{color:var(--muted);margin:0;font-size:14px}.process{background:linear-gradient(135deg,#e2f1e6,#eff6ef);border:1px solid #d1e4d6;border-radius:20px;padding:32px;margin-bottom:46px}.processSteps{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:20px}.processStep{padding:14px 12px;background:rgba(255,255,255,.92);border:1px solid rgba(207,226,213,.8);border-radius:12px;font-size:13px}.processStep b{display:block;color:var(--green);font-size:11px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}.splitInfo{display:grid;grid-template-columns:1.1fr .9fr;gap:20px;margin-bottom:46px}.sourceList a{display:block;padding:12px 0;border-bottom:1px solid var(--line);color:var(--green);font-weight:700;text-decoration:none}.sourceList a small{display:block;color:var(--muted);font-weight:400;margin-top:2px}.faq details{margin:0;border-bottom:1px solid var(--line);padding:12px 0}.faq details summary{font-size:15px;color:var(--ink)}.faq details p{color:var(--muted);max-width:680px;margin:10px 0 4px}.homeFooter{border-top:1px solid var(--line);padding:22px 0;color:var(--muted);font-size:13px}
 @media(max-width:800px){.hero{grid-template-columns:1fr}.heroImage{display:none}.heroCopy{padding:42px 28px}.trustStrip,.serviceGrid,.processSteps{grid-template-columns:1fr}.splitInfo{grid-template-columns:1fr}.topnav .primaryNav{margin-left:0}}
 .sourceCard{border:1px solid #b9d7c5;border-radius:9px;padding:12px;margin:10px 0;background:#f7fcf8}.sourceCard p{margin:5px 0;font-size:13px}.sourceCard a{color:var(--green);font-weight:700}.routeBox{margin-top:14px;padding:12px;background:var(--amber-soft);border-radius:8px;color:#594500;font-size:13px}
 progress{width:100%;accent-color:#1f6b4a;height:12px}
@@ -39,7 +39,7 @@ h1{font-size:30px;margin:6px 0 2px}
 .sub{color:var(--muted);margin:0}
 .grid{display:grid;grid-template-columns:320px 1fr;gap:20px;margin-top:24px}
 @media(max-width:860px){.grid{grid-template-columns:1fr}}
-.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
 h2{font-size:16px;margin:0 0 14px}
 h3{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:24px 0 10px}
 .row{display:flex;justify-content:space-between;gap:14px;padding:10px 0;border-bottom:1px solid var(--line)}
@@ -56,7 +56,7 @@ border-radius:6px;background:var(--card)}
 .pill.ok{background:var(--green-soft);color:var(--green)}
 .pill.warn{background:var(--amber-soft);color:var(--amber)}
 .pill.bad{background:var(--red-soft);color:var(--red)}
-button{background:var(--green);color:#fff;border:0;border-radius:8px;padding:10px 16px;font-weight:600;font-size:14px;cursor:pointer}
+button{background:var(--green);color:#fff;border:0;border-radius:10px;padding:10px 16px;font-weight:700;font-size:14px;cursor:pointer;transition:transform .16s ease,box-shadow .16s ease,background .16s ease}button:not(:disabled):hover{background:var(--green-deep);transform:translateY(-1px);box-shadow:0 5px 14px rgba(23,108,75,.2)}
 button.secondary{background:var(--green-soft);color:var(--green)}
 button:disabled{opacity:.45;cursor:not-allowed}
 .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;align-items:center}
@@ -106,7 +106,7 @@ table.casesTable{width:100%;border-collapse:collapse;font-size:14px}
 table.casesTable th{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);
   text-align:left;padding:8px;border-bottom:2px solid var(--line);white-space:nowrap}
 table.casesTable td{padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
-table.casesTable tr:last-child td{border-bottom:0}
+table.casesTable tr:last-child td{border-bottom:0}table.casesTable tbody tr{transition:background .15s ease}table.casesTable tbody tr:hover{background:#f5faf6}
 button.linklike{background:none;border:0;padding:0;font:inherit;font-weight:700;color:var(--green);
   cursor:pointer;text-decoration:underline}
 [hidden]{display:none !important}
@@ -119,6 +119,9 @@ button.linklike{background:none;border:0;padding:0;font:inherit;font-weight:700;
 #spinner .spin{width:34px;height:34px;border-radius:50%;border:3px solid rgba(255,255,255,.5);
   border-top-color:#fff;animation:spin .8s linear infinite}
 #spinner span{color:#fff;font-size:13px;font-weight:600}
+.queueSummary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0 20px}.queueMetric{padding:14px 15px;border:1px solid var(--line);border-radius:12px;background:linear-gradient(135deg,#fff,#f6faf7)}.queueMetric b{display:block;font-size:25px;line-height:1;color:var(--green-deep);letter-spacing:-.04em}.queueMetric span{display:block;margin-top:5px;color:var(--muted);font-size:12px;font-weight:600}.queueMetric.urgent b{color:var(--amber)}.queueMetric.ready b{color:var(--green)}
+.passport{margin:22px 0 8px;padding:18px;border:1px solid #bddac8;border-radius:14px;background:linear-gradient(135deg,#f3fbf5,#fff)}.passportHead{display:flex;justify-content:space-between;gap:14px;align-items:start;margin-bottom:12px}.passportHead h3{margin:0;color:var(--green-deep);font-size:15px;text-transform:none;letter-spacing:0}.passportHead p{margin:3px 0 0;color:var(--muted);font-size:13px}.passportGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}.passportField{padding:13px;border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.92)}.passportField h4{margin:0 0 10px;font-size:14px}.passportLine{padding:7px 0;border-top:1px solid #edf2ee;font-size:12px}.passportLine:first-of-type{border-top:0;padding-top:0}.passportLine b{display:block;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.06em}.passportLine span{display:block;margin-top:2px;overflow-wrap:anywhere}.passportEmpty{margin:0;color:var(--muted);font-size:13px}.proofCallout{margin-top:12px;padding:10px 12px;border-left:3px solid var(--amber);border-radius:7px;background:var(--amber-soft);color:#5e4b0a;font-size:13px}
+@media(max-width:520px){.queueSummary{grid-template-columns:1fr}.topnav{top:0;border-radius:0;margin-left:-24px;margin-right:-24px}.serviceCard:hover{transform:none}}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 @media print{
@@ -163,7 +166,6 @@ button.linklike{background:none;border:0;padding:0;font:inherit;font-weight:700;
 <nav class="topnav" aria-label="Main navigation">
   <button type="button" onclick="showHome()" id="navHome">Home</button>
   <button type="button" onclick="showHomeSection('howItWorks')" id="navHow">How it works</button>
-  <button type="button" onclick="showHomeSection('sources')" id="navSources">Sources & trust</button>
   <button type="button" onclick="showHomeSection('faq')" id="navFaq">FAQ</button>
   <button type="button" class="primaryNav" onclick="showCaseList()" id="navWorkspace">Open workspace</button>
 </nav>
@@ -191,6 +193,7 @@ button.linklike{background:none;border:0;padding:0;font:inherit;font-weight:700;
       <button type="button" id="createSupportBtn" onclick="createSupportGoal()">Start support goal</button>
     </div>
   </div>
+  <div class="queueSummary" id="queueSummary" aria-live="polite"></div>
   <h2 id="hCases"></h2>
   <div class="tableWrap">
     <table class="casesTable" id="casesTable">
@@ -225,6 +228,7 @@ button.linklike{background:none;border:0;padding:0;font:inherit;font-weight:700;
       <button id="callBtn" onclick="startCall()"></button>
       <label class="live"><input type="checkbox" id="live"> <span id="lblReal"></span></label>
     </div>
+    <button type="button" class="secondary" id="uncertaintyBtn" onclick="prepareUncertaintyDemo()" style="margin-top:10px"></button>
     <div id="callHint" class="muted" style="margin-top:10px"></div>
   </section>
 
@@ -246,6 +250,11 @@ button.linklike{background:none;border:0;padding:0;font:inherit;font-weight:700;
         <tbody id="fields"></tbody>
       </table>
     </div>
+    <section class="passport" aria-labelledby="passportTitle">
+      <div class="passportHead"><div><h3 id="passportTitle"></h3><p id="passportIntro"></p></div><span class="pill ok" id="passportStatus"></span></div>
+      <div id="passportFields" class="passportGrid"></div>
+      <div id="passportCallout" class="proofCallout" hidden></div>
+    </section>
     <details id="rawDetails"><summary id="rawSummary"></summary><pre id="rawJson"></pre></details>
     <div class="actions">
       <button id="reviewBtn" class="secondary" onclick="approve()" disabled></button>
@@ -399,6 +408,7 @@ function paintChrome(){
   document.getElementById('importFile').setAttribute('aria-label',T.import_label);
   document.getElementById('scenarioLabel').textContent=T.demo_scenario;
   for(const option of document.getElementById('scenario').options)option.textContent=T['scenario_'+option.value];
+  document.getElementById('uncertaintyBtn').textContent=LANG==='de'?'Unsichere Antwort vorbereiten':'Prepare uncertainty route';
   paintHome();
 }
 
@@ -437,6 +447,14 @@ function relativeTime(iso){
 }
 
 function renderCaseList(){
+  const total=CASES.length;
+  const needsFollowUp=CASES.filter(c=>c.status==='needs_follow_up').length;
+  const awaitingReview=CASES.filter(c=>c.status==='awaiting_review').length;
+  const summary=LANG==='de'
+    ? [{value:total,label:'Fälle in der Übersicht',cls:''},{value:needsFollowUp,label:'brauchen Rückmeldung',cls:'urgent'},{value:awaitingReview,label:'bereit zur Prüfung',cls:'ready'}]
+    : [{value:total,label:'cases in your queue',cls:''},{value:needsFollowUp,label:'need follow-up',cls:'urgent'},{value:awaitingReview,label:'ready for review',cls:'ready'}];
+  document.getElementById('queueSummary').innerHTML=summary.map(item=>
+    `<div class="queueMetric ${item.cls}"><b>${item.value}</b><span>${item.label}</span></div>`).join('');
   const rows=[...CASES].map(c=>`<tr>
     <td><button type="button" class="linklike" onclick="showCaseDetail('${esc(c.case_id)}')">${esc(holdingLabel(c.holding_name||c.holding_id))}</button></td>
     <td>${esc(schemeLabel(c.scheme?.code||''))}</td>
@@ -567,7 +585,10 @@ async function load(){
   // The console opens on the queue (Fallliste), sorted by urgency server-side;
   // an adviser drills into one case's full evidence only by clicking it.
   CASES=await api('/api/cases');
-  showHome();
+  // A lightweight deep link makes the adviser queue easy to reach from a
+  // bookmarked local demo or a recorded walkthrough without adding routing.
+  if(new URLSearchParams(window.location.search).get('view')==='workspace') await showCaseList();
+  else showHome();
 }
 
 async function setCallLang(lang){
@@ -667,6 +688,62 @@ function fieldsHtml(c){
   }).join('');
 }
 
+// The passport is deliberately a compact proof surface, not a second audit
+// log. A judge or adviser can see the chain for each fact without opening raw
+// JSON: source context, question, exact speech, confirmation, and the safe
+// human next action stay visible together.
+function renderPassport(c){
+  const de=LANG==='de';
+  const answers=Object.fromEntries((c.answers||[]).map(a=>[a.field,a]));
+  const fieldMeta=Object.fromEntries((c.fields||[]).map(f=>[f.name,f]));
+  const source=c.support_goal?.source_cards?.[0]?.title||c.scheme?.source||
+    (de?'Öffentliche Programmquelle':'Public programme source');
+  const hasAnswers=Object.keys(answers).length>0;
+  document.getElementById('passportTitle').textContent=de?'Nachweis-Pass':'Evidence Passport';
+  document.getElementById('passportIntro').textContent=de
+    ?'Jede Angabe bleibt mit Quelle, Frage, Wortlaut, Bestätigung und menschlichem nächsten Schritt verbunden.'
+    :'Every fact stays linked to its source, question, exact wording, confirmation and human next action.';
+  document.getElementById('passportStatus').className=`pill ${hasAnswers?'ok':'warn'}`;
+  document.getElementById('passportStatus').textContent=hasAnswers
+    ?(de?'Nachweis erfasst':'evidence captured')
+    :(de?'Rückruf ausstehend':'callback pending');
+  const fields=(c.missing_fields||[]).map(f=>{
+    const a=answers[f], meta=fieldMeta[f]||{};
+    if(!a)return `<article class="passportField"><h4>${esc(lbl(f))}</h4><p class="passportEmpty">${esc(de?'Noch keine Aussage erfasst.': 'No statement captured yet.')}</p></article>`;
+    const st=confirmationStatus(a);
+    const approved=c.confirmed_fields.includes(f)&&!a.approximate;
+    const decision=approved
+      ?(de?'Für menschliche Freigabe verfügbar':'available for human approval')
+      :(de?'Für Beratung zurückhalten':'hold for adviser review');
+    return `<article class="passportField"><h4>${esc(lbl(f))}</h4>
+      <div class="passportLine"><b>${esc(de?'Quelle':'Source')}</b><span>${esc(source)}</span></div>
+      <div class="passportLine"><b>${esc(de?'Gefragte Frage':'Question asked')}</b><span>${esc(a.question||meta.why||'—')}</span></div>
+      <div class="passportLine"><b>${esc(de?'Gesprochene Antwort':'Spoken answer')}</b><span>${esc(a.spoken||a.answer||'—')}</span></div>
+      <div class="passportLine"><b>${esc(de?'Bestätigung':'Confirmation')}</b><span class="pill ${st.cls}">${esc(st.text)}</span></div>
+      <div class="passportLine"><b>${esc(de?'Erfasster Wert':'Recorded value')}</b><span>${esc(a.answer||'—')}</span></div>
+      <div class="passportLine"><b>${esc(de?'Menschlicher nächster Schritt':'Human next step')}</b><span>${esc(decision)}</span></div>
+    </article>`;
+  }).join('');
+  document.getElementById('passportFields').innerHTML=fields||`<p class="passportEmpty">${esc(de?'Keine fehlenden Fakten in diesem Fall.':'No missing facts in this case.')}</p>`;
+  const uncertain=Object.values(answers).some(a=>a.approximate||!a.confirmed||String(a.answer||'').toLowerCase()==='unknown');
+  const callout=document.getElementById('passportCallout');
+  callout.hidden=!uncertain;
+  callout.textContent=de
+    ?'AcreVoice rät nicht: Diese Antwort bleibt für die menschliche Prüfung zurückgehalten.'
+    :'AcreVoice does not guess: this answer is held for human review.';
+}
+
+function prepareUncertaintyDemo(){
+  const scenario=document.getElementById('scenario');
+  scenario.value='uncertain';
+  document.getElementById('live').checked=false;
+  document.getElementById('scenario').disabled=false;
+  document.getElementById('callHint').textContent=LANG==='de'
+    ?'Übung vorbereitet: Der lokale Ablauf markiert eine ungefähre oder zögerliche Antwort zur menschlichen Prüfung. Dies ist kein echter Anruf.'
+    :'Practice route prepared: the local workflow will hold an approximate or hedged answer for human review. This is not a real call.';
+  showToast(LANG==='de'?'Unsichere Antwort ausgewählt. Rückruf starten, um den sicheren Ablauf zu zeigen.':'Uncertain answer selected. Start the callback to demonstrate the safe route.');
+}
+
 // Every event kind the store can emit gets a plain-language sentence. A kind
 // this console does not recognise falls back to a generic phrase - it never
 // prints the raw identifier to a caseworker.
@@ -742,6 +819,7 @@ function render(){
       ? `<div class="banner ${['configuration','failed'].includes(c.next_action)?'bad':'warn'}">${esc(T['next_'+c.next_action])}</div>` : '';
 
   document.getElementById('fields').innerHTML=fieldsHtml(c);
+  renderPassport(c);
   document.getElementById('rawJson').textContent=JSON.stringify(
     {missing_fields:c.missing_fields, fields:c.fields||null, answers:c.answers}, null, 2);
   document.getElementById('reviewBtn').disabled=!c.confirmed_fields.length||c.status==='closed'||inProgress||!!(c.support_goal&&c.support_goal.goal_step!=='human_review');

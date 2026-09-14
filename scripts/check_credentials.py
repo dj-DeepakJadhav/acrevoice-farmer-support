@@ -23,11 +23,9 @@ def load_dotenv(path: Path) -> None:
         os.environ.setdefault(key.strip(), value.strip().strip("'\""))
 
 
-def mask(secret: str) -> str:
-    """Show only enough to confirm which key is loaded."""
-    if len(secret) <= 8:
-        return "*" * len(secret)
-    return f"{secret[:4]}...{secret[-4:]} ({len(secret)} chars)"
+def credential_status(secret: str) -> str:
+    """Confirm that a credential loaded without exposing any of its value."""
+    return f"present ({len(secret)} chars)"
 
 
 def check_calle() -> bool:
@@ -35,7 +33,7 @@ def check_calle() -> bool:
     if not key:
         print("  FAIL  CALLE_API_KEY is not set (add it to .env)")
         return False
-    print(f"  key   {mask(key)}")
+    print(f"  key   {credential_status(key)}")
     try:
         from calle import CalleClient
     except ImportError:
