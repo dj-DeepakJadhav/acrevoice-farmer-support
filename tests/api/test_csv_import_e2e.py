@@ -43,7 +43,8 @@ from acrevoice.sample_case import ANSWERS_BY_FIELD
 from acrevoice.store import AuditStore
 from acrevoice.workflow import find_missing
 
-SAMPLE_CSV = Path(__file__).resolve().parents[1] / "data" / "sample_import.csv"
+# API tests live one directory below ``tests``; keep fixture lookup anchored at the repo root.
+SAMPLE_CSV = Path(__file__).resolve().parents[2] / "data" / "sample_import.csv"
 
 # holding_name -> (scheme_code, expected missing field names), for rows that
 # have at least one blank field relevant to their own scheme.

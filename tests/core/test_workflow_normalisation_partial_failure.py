@@ -1,11 +1,4 @@
-"""Regression coverage for the fix to the defects documented in
-test_agent_resilience_regression.py: normalisation of one field must never
-affect another field, or the call as a whole.
-
-``run_call`` no longer re-raises a normalisation failure (see
-test_agent_resilience_regression.py for why); the field that failed is instead
-named in ``CallOutcome.normalisation_errors``.
-"""
+"""One field's normalisation failure must not affect the rest of a call."""
 
 from __future__ import annotations
 

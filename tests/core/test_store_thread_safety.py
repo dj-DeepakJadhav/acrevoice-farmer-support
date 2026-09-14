@@ -1,17 +1,8 @@
-"""Attack on claim #7: state must survive across requests.
+"""Concurrency tests for the SQLite audit-store safety boundary.
 
-``AuditStore`` opens a single ``sqlite3.Connection`` with
-``check_same_thread=False`` (``acrevoice/store.py`` line 76) and hands it out to
-every request. FastAPI serves each request (and every background task placing
-a call) on its own worker thread, so ``AuditStore`` methods are genuinely
-called concurrently from multiple threads against that one connection.
-
-Only two methods take ``self._lock`` before touching the connection:
-``append`` and ``begin_call``. ``create_case``, ``set_status``, ``get_case``
-and ``list_cases`` - the methods the console calls on every single poll and
-every status transition - do not. A single shared sqlite3 connection is not
-safe to use from multiple threads without external serialisation of *every*
-statement, and this reproduces real corruption, not just a logical race.
+The web console reads, writes and places callbacks from separate request and
+background-task threads. These tests keep the store lock and one-call-slot
+guarantees executable rather than relying on comments to describe them.
 """
 
 from __future__ import annotations
@@ -24,12 +15,7 @@ from acrevoice.store import AuditStore
 
 
 def test_concurrent_reads_and_status_changes_do_not_corrupt_the_store():
-    """FAILS today: concurrent, unsynchronised access to the shared sqlite3
-    connection (used by the console's poll loop and background call threads
-    alike) throws sqlite3.InterfaceError / SystemError / TypeError - a crash,
-    not merely a stale read. This is exactly the survive-across-requests claim
-    the product makes, under the concurrency the real console produces.
-    """
+    """Concurrent polling and state changes remain safe on one connection."""
     with tempfile.TemporaryDirectory() as tmp:
         store = AuditStore(Path(tmp) / "test.db")
         store.create_case(
@@ -60,21 +46,12 @@ def test_concurrent_reads_and_status_changes_do_not_corrupt_the_store():
 
         assert not errors, (
             f"{len(errors)} exception(s) raised from concurrent AuditStore use "
-            f"(e.g. {errors[0]!r}); create_case/set_status/get_case/list_cases "
-            "do not hold store._lock, unlike append/begin_call, even though the "
-            "connection is shared across threads with check_same_thread=False"
+            f"(e.g. {errors[0]!r})"
         )
 
 
 def test_concurrent_calls_on_one_case_are_not_serialised():
-    """``begin_call`` exists specifically to 'reserve an attempt before queuing
-    work, including across store connections' (its own docstring), but
-    ``workflow.run_call`` never calls it - it calls ``store.set_status``
-    directly, which is a plain unconditional UPDATE. Two threads racing to
-    start a call on the same case both proceed, both append call_started and
-    call_ended events, and (with a real CALL-E provider) both would place a
-    real, credit-consuming call for the same case.
-    """
+    """Only one concurrent callback can reserve a case's call slot."""
     import time
 
     from acrevoice.call_adapter import CallAnswer, CallOutcome

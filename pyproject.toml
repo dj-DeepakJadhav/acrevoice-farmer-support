@@ -25,4 +25,5 @@ build-backend = "setuptools.build_meta"
 where = ["src"]
 
 [tool.setuptools.package-data]
-acrevoice = ["static/*.html"]
+# Keep the landing page and its local hero asset in built distributions.
+acrevoice = ["static/*.html", "static/assets/*.png"]

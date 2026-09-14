@@ -1,33 +1,7 @@
-"""Regression tests for defects found while verifying BACKLOG T1 (commit 81874a9),
-updated for the follow-up design change: a normalisation failure is no longer
-re-raised out of ``run_call``.
+"""Regression coverage for resilient answer normalisation.
 
-History, so the intent of these tests stays legible:
-
-* ``agent.normalise(...)`` used to be called outside the ``try/except`` that
-  wraps ``provider.collect(...)`` in ``run_call``. Any exception raised by the
-  agent - including a plain model timeout, the single most likely real-world
-  failure - propagated out of ``run_call`` uncaught, leaving the case stuck in
-  ``call_in_progress`` and silently dropping the farmer's already-collected
-  answers.
-* The first fix closed that hole but still re-raised the first normalisation
-  exception, after durably recording everything. That satisfied an earlier
-  version of ``test_agent_exception_does_not_crash_the_call`` (which asserted
-  ``pytest.raises(RuntimeError)``), but it was wrong: ``python -m acrevoice
-  --live`` calls ``run_call`` directly to place a real, credit-costing CALL-E
-  call, so a transient Bedrock timeout would spend one of ~20 calls, record
-  everything correctly, and then crash instead of printing a correction
-  package. It also mischaracterised a degraded-but-successful call - the
-  farmer answered, the answers were captured and confirmed - as a failure.
-* This file now asserts the corrected behaviour: ``run_call`` never raises for
-  a normalisation failure. It returns a ``CallOutcome`` whose
-  ``normalisation_errors`` dict names the fields that failed to normalise,
-  while every answer is still recorded, the case still reaches a terminal
-  status, and a per-field failure still never affects another field.
-
-A genuine provider/transport failure (``provider.collect(...)`` itself
-raising) is a different case entirely - the call never happened - and must
-still propagate; see ``test_provider_failure_still_raises_and_is_recorded``.
+A model failure must be recorded per field without discarding a farmer's
+already-collected answers. A provider/transport failure remains a failed call.
 """
 
 from __future__ import annotations
