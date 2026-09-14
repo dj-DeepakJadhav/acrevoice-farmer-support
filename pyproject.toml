@@ -26,4 +26,4 @@ where = ["src"]
 
 [tool.setuptools.package-data]
 # Keep the landing page and its local hero asset in built distributions.
-acrevoice = ["static/*.html", "static/assets/*.png"]
+acrevoice = ["static/*.html", "static/assets/*.png", "static/assets/*.svg"]
