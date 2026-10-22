@@ -190,6 +190,7 @@ button.linklike{background:none;border:0;padding:0;font:inherit;font-weight:700;
     <div class="navigatorForm">
       <label><span id="navigatorHoldingLabel">Holding</span><input id="supportHolding" value="Demo Farm — not a real applicant"></label>
       <label><span id="navigatorTopicLabel">Topic</span><select id="supportTopic"><option value="eco_scheme">Eco-schemes (Öko-Regelungen)</option><option value="multiple_application">Multiple Application (Mehrfachantrag)</option></select></label>
+      <label><span id="navigatorCallLanguageLabel">Call language</span><select id="supportCallLanguage"><option value="en">English</option><option value="de">Deutsch</option></select></label>
       <button type="button" id="createSupportBtn" onclick="createSupportGoal()">Start support goal</button>
     </div>
   </div>
@@ -364,6 +365,7 @@ function paintChrome(){
   document.getElementById('dataNote').textContent=LANG==='de'?'Datenherkunft: Programm- und Quellenangaben sind öffentliche, datierte Informationen des Bayerischen Landwirtschaftsministeriums. Betriebs- und Anrufdaten in dieser Demo sind ausdrücklich synthetisch.':'Data provenance: programme and source records are dated public information from the Bavarian Ministry of Agriculture. Farm and call records in this demo are explicitly synthetic.';
   document.getElementById('navigatorHoldingLabel').textContent=LANG==='de'?'Betrieb':'Holding';
   document.getElementById('navigatorTopicLabel').textContent=LANG==='de'?'Thema':'Topic';
+  document.getElementById('navigatorCallLanguageLabel').textContent=LANG==='de'?'Sprache des Anrufs':'Call language';
   document.getElementById('createSupportBtn').textContent=LANG==='de'?'Unterstützungsfall starten':'Start support goal';
   const topicOptions=document.getElementById('supportTopic').options;
   topicOptions[0].textContent=LANG==='de'?'Öko-Regelungen (Eco-schemes)':'Eco-schemes (Öko-Regelungen)';
@@ -518,7 +520,9 @@ async function createSupportGoal(){
   try{
     const detail=await api('/api/support-goals',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
       holding_name:document.getElementById('supportHolding').value||'Bayerischer Musterbetrieb',
-      topic:document.getElementById('supportTopic').value,language:'en',callback_requested:true
+      topic:document.getElementById('supportTopic').value,
+      language:document.getElementById('supportCallLanguage').value,
+      callback_requested:true
     })});
     CASE=detail; hideSpinner(); VIEW='detail';
     document.getElementById('homeView').hidden=true;document.getElementById('listView').hidden=true;document.getElementById('journey').hidden=false;document.getElementById('detailView').hidden=false;paintTitle();render();

@@ -4,12 +4,16 @@
 
 AcreVoice is a farmer-support workspace for finding public programme guidance, resolving missing case information by phone with consent, and handing a reviewable evidence package to a human adviser. It is designed for Bavarian agriculture services, with English and German support.
 
+[![Video Walkthrough](https://img.youtube.com/vi/ZXHLFSGGpHI/mqdefault.jpg)](https://www.youtube.com/watch?v=ZXHLFSGGpHI)
+
+---
+
 ![AcreVoice current runtime architecture](src/acrevoice/static/assets/acrevoice-runtime-architecture.png)
 
 The adviser workspace includes an **Evidence Passport** for each missing fact:
 source, question, spoken answer, confirmation, recorded value, and human next
 step stay visible together. The local rehearsal also includes an explicit
-uncertainty route that holds hedged answers rather than guessing.
+uncertainty route that holds hedged answers in an uncertainty hold.
 
 ## What it does
 
@@ -111,7 +115,7 @@ PYTHONPATH=src ./.venv/bin/python -m acrevoice --live
 | Layer | Role in AcreVoice |
 | --- | --- |
 | **[CALL-E](https://heycall-e.com/)** | Places the consented outbound callback and returns structured results the workflow can act on. |
-| **[Strands Agents](https://strandsagents.com/docs/user-guide/quickstart/overview/)** | Runs the record agent and its field-specific normalisation tools, producing structured evidence rather than free-form notes. |
+| **[Strands Agents](https://strandsagents.com/docs/user-guide/quickstart/overview/)** | Runs the record agent and its field-specific normalisation tools, producing structured evidence instead of free-form notes. |
 | **[Amazon Bedrock](https://docs.aws.amazon.com/bedrock/)** | Provides the configured model runtime for the Strands agent. |
 | **FastAPI + SQLite** | Delivers the browser service, case workflow, export endpoints, and append-only audit trail. |
 

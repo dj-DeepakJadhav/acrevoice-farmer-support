@@ -8,7 +8,7 @@
 1. Open AcreVoice at `http://127.0.0.1:8080` and refresh the page.
 2. In Recordly, capture only the AcreVoice browser window and turn on your microphone.
 3. Put the test phone on speaker close enough for the call to be heard clearly.
-4. Select **English** in the console. Close terminals, notifications, credentials, personal numbers, and unrelated tabs.
+4. Select **English** for the console and **English** for the new support goal's **Call language**. The call language controls what the farmer hears. Close terminals, notifications, credentials, personal numbers, and unrelated tabs.
 5. Confirm the test participant has agreed to both receive and record the call.
 
 Keep these tabs ready, but do not leave them all on screen: AcreVoice, the public GitHub README, and the architecture map. The product is the story; the other two are short proof points.
@@ -96,6 +96,30 @@ Do not narrate while the call runs. Let the consent, questions, read-backs and c
 ## After the take
 
 Trim only ringing, loading, or accidental pauses. Do not cut the consent, question, answer, or confirmation so tightly that the meaning changes. Add the opening title `AcreVoice — live consented test callback`; label the uncertainty route `Local safety rehearsal — not a live call`; then export an MP4 at 1080p and watch it through once with sound.
+
+## Kokoro British-male voiceover copy
+
+In Kokoro, choose **George (British Male)**. Generate these as separate clips so they can sit naturally around the live call. Do not add narration over the farmer's consent, answers, or confirmations.
+
+**Clip 1 — home page**
+
+> A small missing detail can create days of phone tag. AcreVoice keeps that follow-up simple: it asks one focused question with consent, captures the answer clearly, and leaves the decision with the adviser.
+
+**Clip 2 — GitHub and guidance**
+
+> This is an inspectable prototype. The public repository contains the application, tests, and architecture behind the workflow. We start with public guidance, not a guess about eligibility.
+
+**Clip 3 — before the call**
+
+> For this test, the farmer has agreed to the callback. AcreVoice asks only for the missing details, reads each answer back, and records it only after confirmation.
+
+**Clip 4 — Evidence Passport**
+
+> After the call, the adviser sees something more useful than a loose phone note: the source, the question, the farmer's own words, the confirmation, and the next step together.
+
+**Clip 5 — close**
+
+> AcreVoice coordinates the follow-up. It does not approve eligibility or submit an application. When an answer is uncertain, it is held for human review. Less phone tag. Clearer evidence. Human decisions.
 
 ## Stop and fix setup first if
 
